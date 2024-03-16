@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class Window extends Canvas {
     public Window(int width,int height,String title,Game game) {
+        //Sets parameters for main window
         JFrame frame = new JFrame(title);
 
         frame.setPreferredSize(new Dimension(width,height));
@@ -14,6 +15,7 @@ public class Window extends Canvas {
         frame.setLocationRelativeTo(null);
         frame.add(game);
         frame.setVisible(true);
+        //Game start here
         game.start();
     }
 }
