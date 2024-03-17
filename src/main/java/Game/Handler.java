@@ -1,10 +1,13 @@
-import java.awt.*;
+package Game;
+
+import java.awt.Graphics;
 import java.util.LinkedList;
 
 
 public class Handler {
     //Linked list for all game objects
     LinkedList<GameObject> objects = new LinkedList<GameObject>();
+
     //Ticks all game objects
     public void tick(){
         for (GameObject go : objects){

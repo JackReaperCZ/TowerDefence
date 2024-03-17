@@ -1,3 +1,7 @@
+package Game;
+
+import Game.Monsters.Monster;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -12,6 +16,8 @@ public class Game extends Canvas implements  Runnable {
 
     //Declaration of handler of game objects
     private Handler handler;
+    //Declaration of HUD object
+    private HUD hud;
 
     //Main method
     public static void main(String[] args) {
@@ -21,6 +27,13 @@ public class Game extends Canvas implements  Runnable {
     public Game() {
         //Initialization of the handler
         this.handler = new Handler();
+        //Initialization of the HUD
+        this.hud = new HUD();
+
+        //Test object
+        handler.addGameObject(new Monster(500,500));
+
+        this.addKeyListener(new KeyInput(handler));
         //Creating a main window
         new Window(WIDTH,HEIGHT,"Tower Defence",this);
     }
@@ -45,13 +58,14 @@ public class Game extends Canvas implements  Runnable {
     //Main game loop
     @Override
     public void run() {
+        this.requestFocus();
         long lastTime = System.nanoTime();
         //60 ticks a second
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        long timer = System.currentTimeMillis();
-        int frames = 0;
+        //long timer = System.currentTimeMillis();
+        //int frames = 0;
         while (running) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
@@ -62,13 +76,12 @@ public class Game extends Canvas implements  Runnable {
             }
             if (running){
                 render();
-                frames++;
-
+                /*frames++;
                 if (System.currentTimeMillis() - timer > 1000){
                     timer += 1000;
                     System.out.println("FPS: " + frames);
                     frames = 0;
-                }
+                }*/
             }
         }
         stop();
@@ -81,6 +94,7 @@ public class Game extends Canvas implements  Runnable {
 
     //Method to tell handled to render all game objects
     private void render(){
+        //Triple buffering
         BufferStrategy bs = this.getBufferStrategy();
         if (bs == null){
             this.createBufferStrategy(3);
@@ -88,8 +102,11 @@ public class Game extends Canvas implements  Runnable {
         }
 
         Graphics g = bs.getDrawGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,WIDTH,HEIGHT);
 
         handler.render(g);
+        hud.render(g);
 
         g.dispose();
         bs.show();

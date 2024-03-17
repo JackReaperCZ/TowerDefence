@@ -1,8 +1,11 @@
-import javax.swing.*;
-import java.awt.*;
+package Game;
+
+import javax.swing.JFrame;
+import java.awt.Dimension;
+import java.awt.Canvas;
 
 public class Window extends Canvas {
-    public Window(int width,int height,String title,Game game) {
+    public Window(int width, int height, String title, Game game) {
         //Sets parameters for main window
         JFrame frame = new JFrame(title);
 
@@ -15,7 +18,7 @@ public class Window extends Canvas {
         frame.setLocationRelativeTo(null);
         frame.add(game);
         frame.setVisible(true);
-        //Game start here
+        //Game.Game start here
         game.start();
     }
 }

@@ -1,3 +1,5 @@
+package Game;
+
 import java.awt.Graphics;
 //Abstract class of game object
 public abstract class GameObject {
@@ -6,10 +8,9 @@ public abstract class GameObject {
     protected ID id;
     protected int velX, velY;
     //Constructor
-    public GameObject(int x, int y, ID id) {
+    public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
-        this.id = id;
     }
     //Getters and setters
     public abstract void tick();
