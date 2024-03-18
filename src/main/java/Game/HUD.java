@@ -10,6 +10,8 @@ public class HUD {
     public void render(Graphics g){
         g.setColor(Color.GRAY);
         g.fillRect(0,0,200,50);
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(5,5,190,40);
         g.setColor(Color.WHITE);
         g.drawString("Gold : " + GOLD, 5, 25);
         g.drawString("Health : " + HEALTH, 100, 25);
