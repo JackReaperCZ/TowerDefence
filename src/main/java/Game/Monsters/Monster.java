@@ -35,8 +35,10 @@ public class Monster extends GameObject {
         g.setColor(Color.RED);
         g.fillOval(x,y,32,32);
 
-        if (y <= 0 || y >= Game.HEIGHT - 32) velY *= -1;
-        if (x <= 0 || x >= Game.WIDTH - 16) velX *= -1;
+        if (y <= 0) velY = 5;
+        if (y >= Game.HEIGHT - 64) velY =-5;
+        if (x <= 0) velX = 5;
+        if (x >= Game.WIDTH - (32+16)) velX = -5;
     }
 
     //Getters and setters
