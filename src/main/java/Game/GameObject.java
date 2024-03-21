@@ -1,21 +1,25 @@
 package Game;
 
-import java.awt.Graphics;
+import java.awt.*;
+
 //Abstract class of game object
 public abstract class GameObject {
     //Base variables
     protected int x,y;
     protected ID id;
-    protected int velX, velY;
+    protected double velX, velY;
     //Constructor
     public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    //Getters and setters
+    //Tick
     public abstract void tick();
-
+    //Render
     public abstract void render(Graphics g);
+    //Collision
+    public abstract Rectangle getBounds();
+    //Getters and setters
 
     public int getX() {
         return x;
@@ -41,7 +45,7 @@ public abstract class GameObject {
         this.id = id;
     }
 
-    public int getVelX() {
+    public double getVelX() {
         return velX;
     }
 
@@ -49,7 +53,7 @@ public abstract class GameObject {
         this.velX = velX;
     }
 
-    public int getVelY() {
+    public double getVelY() {
         return velY;
     }
 
