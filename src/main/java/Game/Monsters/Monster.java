@@ -1,8 +1,9 @@
 package Game.Monsters;
 
-import Game.Game;
 import Game.GameObject;
+import Game.Handler;
 import Game.ID;
+import Game.Game;
 
 import java.awt.*;
 //Monster class
@@ -15,19 +16,24 @@ public class Monster extends GameObject {
     protected int hp;
     //The gold player gets when the monster is killed
     protected int gold;
+    protected Handler handler;
     //Constructor
-    public Monster(int x, int y) {
+    public Monster(int x, int y, Handler handler) {
         super(x, y);
         this.id = ID.Monster;
+        this.handler = handler;
         velX = 5;
         velY = 5;
     }
 
     @Override
     public void tick() {
+        collision();
         //Test movement
+        /*
         x += velX;
         y += velY;
+         */
     }
     //Rendering of the object
     @Override
@@ -39,6 +45,19 @@ public class Monster extends GameObject {
         if (y >= Game.HEIGHT - 64) velY =-5;
         if (x <= 0) velX = 5;
         if (x >= Game.WIDTH - (32+16)) velX = -5;
+    }
+    //Methot to handle collision with projectiles
+    public void collision(){
+        for (GameObject go: handler.objects) {
+            if (go.getId() == ID.Projectile && getBounds().intersects(go.getBounds())){
+                System.out.println(true);
+            }
+        }
+    }
+    //Getting hitbox of the monster
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(x,y,32,32);
     }
 
     //Getters and setters
