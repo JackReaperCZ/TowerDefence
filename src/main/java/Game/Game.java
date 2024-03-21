@@ -1,6 +1,7 @@
 package Game;
 
 import Game.Monsters.Monster;
+import Game.Towers.Tower;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -31,7 +32,8 @@ public class Game extends Canvas implements  Runnable {
         this.hud = new HUD();
 
         //Test object
-        handler.addGameObject(new Monster(500,500));
+        handler.addGameObject(new Monster(500,500,handler));
+        handler.addGameObject(new Tower(450,550,handler));
 
         this.addKeyListener(new KeyInput(handler));
         //Creating a main window
