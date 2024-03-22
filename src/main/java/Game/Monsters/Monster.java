@@ -6,6 +6,9 @@ import Game.ID;
 import Game.Game;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+
 //Monster class
 public class Monster extends GameObject {
     //Type of the monster
@@ -22,24 +25,22 @@ public class Monster extends GameObject {
         super(x, y);
         this.id = ID.Monster;
         this.handler = handler;
-        velX = 5;
-        velY = 5;
+        velX = 2;
+        velY = 2;
     }
-
+    //Tick method
     @Override
     public void tick() {
         collision();
         //Test movement
-        /*
         x += velX;
         y += velY;
-         */
     }
     //Rendering of the object
     @Override
     public void render(Graphics g) {
         g.setColor(Color.RED);
-        g.fillOval(x,y,32,32);
+        g.fillRect(x,y,32,32);
 
         if (y <= 0) velY = 5;
         if (y >= Game.HEIGHT - 64) velY =-5;
@@ -56,8 +57,13 @@ public class Monster extends GameObject {
     }
     //Getting hitbox of the monster
     @Override
-    public Rectangle getBounds() {
-        return new Rectangle(x,y,32,32);
+    public Ellipse2D getIntersects() {
+        return null;
+    }
+
+    @Override
+    public Rectangle2D getBounds() {
+        return new Rectangle2D.Double(x,y,32,32);
     }
 
     //Getters and setters
