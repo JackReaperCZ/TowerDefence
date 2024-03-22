@@ -1,13 +1,15 @@
 package Game;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 //Abstract class of game object
 public abstract class GameObject {
     //Base variables
     protected int x,y;
     protected ID id;
-    protected double velX, velY;
+    protected int velX, velY;
     //Constructor
     public GameObject(int x, int y) {
         this.x = x;
@@ -17,8 +19,11 @@ public abstract class GameObject {
     public abstract void tick();
     //Render
     public abstract void render(Graphics g);
-    //Collision
-    public abstract Rectangle getBounds();
+    //Collisions
+    //For round objects
+    public abstract Ellipse2D getIntersects();
+    //For rectangle objects
+    public abstract Rectangle2D getBounds();
     //Getters and setters
 
     public int getX() {
@@ -45,7 +50,7 @@ public abstract class GameObject {
         this.id = id;
     }
 
-    public double getVelX() {
+    public int getVelX() {
         return velX;
     }
 
@@ -53,7 +58,7 @@ public abstract class GameObject {
         this.velX = velX;
     }
 
-    public double getVelY() {
+    public int getVelY() {
         return velY;
     }
 
