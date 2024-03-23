@@ -33,6 +33,7 @@ public class Game extends Canvas implements  Runnable {
 
         //Test object
         handler.addGameObject(new Monster(500,600,handler));
+        handler.addGameObject(new Monster(750,500,handler));
         handler.addGameObject(new Tower(450,550,handler));
 
         this.addKeyListener(new KeyInput(handler));

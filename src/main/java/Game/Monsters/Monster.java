@@ -27,6 +27,7 @@ public class Monster extends GameObject {
         this.handler = handler;
         velX = 2;
         velY = 2;
+        hp = 2;
     }
     //Tick method
     @Override
@@ -51,7 +52,11 @@ public class Monster extends GameObject {
     public void collision(){
         for (GameObject go: handler.objects) {
             if (go.getId() == ID.Projectile && getBounds().intersects(go.getBounds())){
-                System.out.println(true);
+                handler.removeGameObject(go);
+                hp--;
+                if (hp <= 0){
+                    handler.removeGameObject(this);
+                }
             }
         }
     }

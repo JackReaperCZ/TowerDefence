@@ -3,6 +3,7 @@ package Game;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 
 //Abstract class of game object
 public abstract class GameObject {
@@ -10,6 +11,7 @@ public abstract class GameObject {
     protected int x,y;
     protected ID id;
     protected int velX, velY;
+    protected Integer identification;
     //Constructor
     public GameObject(int x, int y) {
         this.x = x;
@@ -24,6 +26,20 @@ public abstract class GameObject {
     public abstract Ellipse2D getIntersects();
     //For rectangle objects
     public abstract Rectangle2D getBounds();
+
+    //equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameObject that = (GameObject) o;
+        return Objects.equals(identification, that.identification);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(identification);
+    }
+
     //Getters and setters
 
     public int getX() {
@@ -64,5 +80,12 @@ public abstract class GameObject {
 
     public void setVelY(int velY) {
         this.velY = velY;
+    }
+    public Integer getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(Integer identification) {
+        this.identification = identification;
     }
 }
