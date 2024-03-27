@@ -3,7 +3,6 @@ package Game.Monsters;
 import Game.GameObject;
 import Game.Handler;
 import Game.ID;
-import Game.Game;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -19,21 +18,28 @@ public class Monster extends GameObject {
     protected int hp;
     //The gold player gets when the monster is killed
     protected int gold;
+    //The speed of the monster
+    protected int speed;
+    protected int xToGo;
+    protected int yToGo;
+    protected int flag = 0;
     protected Handler handler;
     //Constructor
-    public Monster(int x, int y, Handler handler) {
+    public Monster(int x, int y, int speed, Handler handler) {
         super(x, y);
         this.id = ID.Monster;
         this.handler = handler;
-        velX = 2;
-        velY = 2;
+        this.speed = speed;
         hp = 2;
     }
     //Tick method
     @Override
     public void tick() {
         collision();
-        //Test movement
+        if (x == xToGo && y == yToGo){
+            flag++;
+            handler.map.nextFlag(flag,this);
+        }
         x += velX;
         y += velY;
     }
@@ -41,14 +47,9 @@ public class Monster extends GameObject {
     @Override
     public void render(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(x,y,32,32);
-
-        if (y <= 0) velY = 5;
-        if (y >= Game.HEIGHT - 64) velY =-5;
-        if (x <= 0) velX = 5;
-        if (x >= Game.WIDTH - (32+16)) velX = -5;
+        g.fillRect(x,y,76,76);
     }
-    //Methot to handle collision with projectiles
+    //Method to handle collision with projectiles
     public void collision(){
         for (GameObject go: handler.objects) {
             if (go.getId() == ID.Projectile && getBounds().intersects(go.getBounds())){
@@ -60,6 +61,27 @@ public class Monster extends GameObject {
             }
         }
     }
+    //Method that will tell monster where to go
+    public void goTo(int x,int y){
+        this.xToGo = x;
+        this.yToGo = y;
+        int xi = this.x - x;
+        int yi = this.y - y;
+        if (yi == 0){
+            setVelY(0);
+        } else if(yi > 0){
+            setVelY(-1 * speed);
+        } else {
+            setVelY(speed);
+        }
+        if (xi == 0){
+            setVelX(0);
+        } else if(xi > 0){
+            setVelX(-1 * speed);
+        } else {
+            setVelX(speed);
+        }
+    }
     //Getting hitbox of the monster
     @Override
     public Ellipse2D getIntersects() {
@@ -68,7 +90,7 @@ public class Monster extends GameObject {
 
     @Override
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(x,y,32,32);
+        return new Rectangle2D.Double(x,y,76,76);
     }
 
     //Getters and setters

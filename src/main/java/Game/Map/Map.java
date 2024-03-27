@@ -1,34 +1,56 @@
 package Game.Map;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
+import Game.Handler;
 import Game.Game;
+import Game.Monsters.Monster;
+
+import javax.swing.*;
 
 public class Map {
-    public Path path;
+    private Path path;
+    private Spawner spawner;
+    private Handler handler;
 
-    public Map() {
+    public Map(Handler handler) {
         //Create a test path
         Path path1 = new Path();
-        path1.addFlag(new Flag(500,0));
-        path1.addFlag(new Flag(500,300));
-        path1.addFlag(new Flag(250,300));
-        path1.addFlag(new Flag(250, 550));
-        path1.addFlag(new Flag(500,550));
-        path1.addFlag(new Flag(500,Game.HEIGHT));
+        path1.addFlag(new Flag(-76,620));
+        path1.addFlag(new Flag(920,620));
+        path1.addFlag(new Flag(920,426));
+        path1.addFlag(new Flag(190, 426));
+        path1.addFlag(new Flag(190,50));
+        path1.addFlag(new Flag(Game.WIDTH + 76,50));
         path1.buildPath();
         this.path = path1;
+        this.handler = handler;
+        this.spawner = new Spawner(this.path,handler);
+    }
+    //Tick method
+    public void tick(){
+        spawner.tick();
     }
 
     //Rendering of the map
     public void render(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.fillRect(0,0,Game.WIDTH,Game.HEIGHT);
-        renderPath(g);
+        ImageIcon icon = new ImageIcon("src/main/data/maps/plains/map.png");
+        Image image = icon.getImage();
+        g.drawImage(image,0,0,null);
     }
-    //Rendering of the path logic
-    private void renderPath(Graphics g){
-        g.setColor(Color.ORANGE);
+    //Sends the monster object to the next flag
+    public void nextFlag(int i, Monster monster){
+        if (i == path.getFlags().size()-1){
+            handler.removeGameObject(monster);
+        } else {
+            monster.goTo(path.getFlags().get(i+1).getX(),path.getFlags().get(i+1).getY());
+        }
+    }
+    //Hitbox of the path
+    public ArrayList<Rectangle2D> getBounds(){
+        ArrayList<Rectangle2D> ar = new ArrayList<>();
         for (Flag f : path.getFlags()){
             if (f.getNextFlag()!= null){
 
@@ -45,11 +67,12 @@ public class Map {
                         y = f.getNextFlag().getY();
                 }
                 if (yi == 0){
-                        g.fillRect(x,y, Math.abs(xi) + 32,32);
+                        ar.add(new Rectangle2D.Double(x,y, Math.abs(xi) + 76,76));
                     } else {
-                        g.fillRect(x,y, 32,Math.abs(yi) + 32);
+                        ar.add(new Rectangle2D.Double(x,y, 76,Math.abs(yi) + 76));
                 }
             }
         }
+        return ar;
     }
 }
