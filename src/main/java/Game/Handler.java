@@ -13,12 +13,13 @@ public class Handler {
     //Linked list of game object that will be removed the next tick
     public LinkedList<GameObject> toRemove = new LinkedList<>();
     //Actual map to render
-    public Map map = new Map();
-
+    public Map map = new Map(this);
+    //Flag for the ids
     private int idFlag = 0;
 
     //Ticks all game objects
     public void tick(){
+        map.tick();
         for (GameObject go : objects){
             go.tick();
         }
