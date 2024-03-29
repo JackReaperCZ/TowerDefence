@@ -13,7 +13,7 @@ public class Handler {
     //Linked list of game object that will be removed the next tick
     public LinkedList<GameObject> toRemove = new LinkedList<>();
     //Actual map to render
-    public Map map = new Map(this);
+    public Map map = new Map(this,"src/main/data/maps/plains/");
     //Flag for the ids
     private int idFlag = 0;
 
