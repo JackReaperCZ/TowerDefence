@@ -8,14 +8,15 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
-public class Projectile extends GameObject {
+public abstract class Projectile extends GameObject {
     protected Handler handler;
+    protected Image image;
+    protected int speed;
 
-    public Projectile(int x, int y, int x2, int y2, int speed, Handler handler) {
+    public Projectile(int x, int y,Handler handler) {
         super(x, y);
         this.handler = handler;
         this.id = ID.Projectile;
-        velCalculate(x2, y2, speed);
     }
     //Method that calculates vel of the projectile
     public void velCalculate(int x2, int y2, int speed) {
@@ -34,8 +35,7 @@ public class Projectile extends GameObject {
     //Render method
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.CYAN);
-        g.fillRect(x, y, 16, 16);
+        g.drawImage(image,x,y,null);
     }
     //Hitboxes
     @Override
@@ -44,6 +44,6 @@ public class Projectile extends GameObject {
     }
     @Override
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(x,y,16,16);
+        return new Rectangle2D.Double(x,y,38,38);
     }
 }
