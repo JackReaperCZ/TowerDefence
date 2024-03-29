@@ -14,18 +14,11 @@ public class Map {
     private Path path;
     private Spawner spawner;
     private Handler handler;
+    private String sourcePath;
 
-    public Map(Handler handler) {
-        //Create a test path
-        Path path1 = new Path();
-        path1.addFlag(new Flag(-76,620));
-        path1.addFlag(new Flag(920,620));
-        path1.addFlag(new Flag(920,426));
-        path1.addFlag(new Flag(190, 426));
-        path1.addFlag(new Flag(190,50));
-        path1.addFlag(new Flag(Game.WIDTH + 76,50));
-        path1.buildPath();
-        this.path = path1;
+    public Map(Handler handler,String sourcePath) {
+        this.sourcePath = sourcePath;
+        this.path = new Path(sourcePath);
         this.handler = handler;
         this.spawner = new Spawner(this.path,handler);
     }
@@ -36,7 +29,7 @@ public class Map {
 
     //Rendering of the map
     public void render(Graphics g) {
-        ImageIcon icon = new ImageIcon("src/main/data/maps/plains/map.png");
+        ImageIcon icon = new ImageIcon(sourcePath + "map.png");
         Image image = icon.getImage();
         g.drawImage(image,0,0,null);
     }
@@ -44,6 +37,7 @@ public class Map {
     public void nextFlag(int i, Monster monster){
         if (i == path.getFlags().size()-1){
             handler.removeGameObject(monster);
+            System.out.println("GG");
         } else {
             monster.goTo(path.getFlags().get(i+1).getX(),path.getFlags().get(i+1).getY());
         }
