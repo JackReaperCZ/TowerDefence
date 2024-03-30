@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import Game.Handler;
-import Game.Game;
+import Game.HUD.HUD;
 import Game.Monsters.Monster;
 
 import javax.swing.*;
@@ -15,8 +15,12 @@ public class Map {
     private Spawner spawner;
     private Handler handler;
     private String sourcePath;
+    private Image image;
+
 
     public Map(Handler handler,String sourcePath) {
+        ImageIcon icon = new ImageIcon(sourcePath + "map.png");
+        this.image = icon.getImage();
         this.sourcePath = sourcePath;
         this.path = new Path(sourcePath);
         this.handler = handler;
@@ -29,15 +33,13 @@ public class Map {
 
     //Rendering of the map
     public void render(Graphics g) {
-        ImageIcon icon = new ImageIcon(sourcePath + "map.png");
-        Image image = icon.getImage();
         g.drawImage(image,0,0,null);
     }
     //Sends the monster object to the next flag
     public void nextFlag(int i, Monster monster){
         if (i == path.getFlags().size()-1){
+            HUD.HEALTH -= monster.getDmg();
             handler.removeGameObject(monster);
-            System.out.println("GG");
         } else {
             monster.goTo(path.getFlags().get(i+1).getX(),path.getFlags().get(i+1).getY());
         }

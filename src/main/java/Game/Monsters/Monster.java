@@ -30,7 +30,8 @@ public class Monster extends GameObject {
         this.id = ID.Monster;
         this.handler = handler;
         this.speed = speed;
-        hp = 10;
+        dmg = 10;
+        hp = 5;
     }
     //Tick method
     @Override
