@@ -1,11 +1,13 @@
 package Game;
 
+import Game.HUD.Dummy;
+import Game.HUD.HUD;
 import Game.Towers.Cannon;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
-public class Game extends Canvas implements  Runnable {
+public class Game extends Canvas implements Runnable {
     //Static parameters for main window
     public static final int WIDTH = 1080, HEIGHT = WIDTH / 12 * 9;
 
@@ -14,10 +16,22 @@ public class Game extends Canvas implements  Runnable {
     //Control variable for stopping and starting the game
     private boolean running = false;
 
+    //Enum for game state
+    public enum STATE {
+        MENU,
+        GAME,
+        PAUSE
+    }
+
+    public static STATE gameState = STATE.GAME;
+
     //Declaration of handler of game objects
     private Handler handler;
     //Declaration of HUD object
     private HUD hud;
+    //Declaration of Game.Menu object
+    private Menu menu;
+    private KeyInput keyInput;
 
     //Main method
     public static void main(String[] args) {
@@ -28,31 +42,35 @@ public class Game extends Canvas implements  Runnable {
         //Initialization of the handler
         this.handler = new Handler();
         //Initialization of the HUD
-        this.hud = new HUD();
-
+        this.hud = new HUD(handler,this);
+        //Initialization of the Game.Menu
+        this.menu = new Menu(this, handler);
+        //Initialization of the KeyInput
+        this.keyInput = new KeyInput(handler, this);
         //Test objects
-        handler.addGameObject(new Cannon(340,260,400,handler));
-        handler.addGameObject(new Cannon(15,460,400,handler));
-
-        this.addKeyListener(new KeyInput(handler));
+        handler.addGameObject(new Cannon(340, 260, handler));
+        handler.addGameObject(new Cannon(15, 460, handler));
+        this.addKeyListener(keyInput);
+        this.addMouseListener(hud);
+        this.addMouseListener(hud.getSidebar());
         //Creating a main window
-        new Window(WIDTH,HEIGHT,"Tower Defence",this);
+        new Window(WIDTH, HEIGHT, "Tower Defence", this);
     }
 
     //Method to initialize and start the thread
-    public synchronized void start(){
+    public synchronized void start() {
         thread = new Thread(this);
         thread.start();
         running = true;
     }
 
     //Method to stop the thread
-    public synchronized void stop(){
+    public synchronized void stop() {
         try {
             thread.join();
             running = false;
-        } catch (Exception e){
-          e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -71,11 +89,11 @@ public class Game extends Canvas implements  Runnable {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
-            while (delta >= 1){
+            while (delta >= 1) {
                 tick();
                 delta--;
             }
-            if (running){
+            if (running) {
                 render();
                 /*frames++;
                 if (System.currentTimeMillis() - timer > 1000){
@@ -89,27 +107,43 @@ public class Game extends Canvas implements  Runnable {
     }
 
     //Method to tell handled to tick all game objects
-    private void tick(){
-        handler.tick();
+    private void tick() {
+        if (gameState == STATE.GAME) {
+            handler.tick();
+            hud.tick();
+        }
     }
 
     //Method to tell handled to render all game objects
-    private void render(){
+    private void render() {
         //Triple buffering
         BufferStrategy bs = this.getBufferStrategy();
-        if (bs == null){
+        if (bs == null) {
             this.createBufferStrategy(3);
             return;
         }
 
         Graphics g = bs.getDrawGraphics();
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0,WIDTH,HEIGHT);
 
-        handler.render(g);
-        hud.render(g);
+        if (gameState == STATE.GAME) {
+            handler.render(g);
+            hud.render(g);
+        } else if (gameState == STATE.MENU) {
+            menu.render(g);
+        }
 
         g.dispose();
         bs.show();
+    }
+
+    public HUD getHud() {
+        return hud;
+    }
+
+    public void addListenerForDummy(Dummy dummy){
+        this.addMouseMotionListener(dummy);
+    }
+        public void removeListenerForDummy(Dummy dummy){
+        this.removeMouseMotionListener(dummy);
     }
 }
