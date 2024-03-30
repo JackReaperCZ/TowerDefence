@@ -12,5 +12,4 @@ public class Cannonball extends Projectile{
         ImageIcon icon = new ImageIcon("src/main/data/projectile/cannonball/cannonball.png");
         this.image = icon.getImage();
     }
-
 }

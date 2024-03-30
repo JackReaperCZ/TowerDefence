@@ -7,13 +7,14 @@ import javax.swing.*;
 
 public class Cannon extends Tower {
     private int coolDownFlag;
-    public Cannon(int x, int y, int radius, Handler handler) {
+    public static int PRICE = 350;
+    public Cannon(int x, int y, Handler handler) {
         super(x, y, handler);
-        ImageIcon icon = new ImageIcon("src/main/data/towers/canon/cannon.png");
+        ImageIcon icon = new ImageIcon("src/main/data/towers/cannon/cannon.png");
         this.image = icon.getImage();
         this.coolDownFlag = 120;
         this.projectileCooldown = this.coolDownFlag;
-        this.radius = radius;
+        this.radius = 400;
     }
     @Override
     public void shoot(int xTarget,int yTarget){
