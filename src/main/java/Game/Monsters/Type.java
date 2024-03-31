@@ -3,5 +3,5 @@ package Game.Monsters;
 public enum Type {
     NORMAL,
     ARMORED,
-    MAGICREZISTENT,
+    MAGICRESISTANT,
 }
