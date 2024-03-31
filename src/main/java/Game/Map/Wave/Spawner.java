@@ -1,6 +1,7 @@
-package Game.Map;
+package Game.Map.Wave;
 
 import Game.Handler;
+import Game.Map.Path;
 import Game.Monsters.Monster;
 
 public class Spawner {
@@ -8,7 +9,7 @@ public class Spawner {
     private Path path;
     private Handler handler;
 
-    public Spawner(Path path, Handler handler) {
+    public Spawner(Path path, Handler handler, String sourcePath) {
         this.handler = handler;
         this.path = path;
     }
