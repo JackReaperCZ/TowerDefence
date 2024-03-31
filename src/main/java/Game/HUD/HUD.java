@@ -2,6 +2,7 @@ package Game.HUD;
 
 import Game.Handler;
 import Game.Game;
+import Game.Map.Map;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,41 +11,27 @@ import java.io.*;
 
 //Class for HUD rendering layout
 public class HUD extends UI {
-    //Gold variable
-    public static int COIN = 550;
-    //Gold variable
-    public static int HEALTH = 100;
-    private Handler handler;
-    private Game game;
     private Image coin;
     private Image health;
     private Sidebar sidebar;
+    private Upgradebar upgradeBar;
+    private PauseMenu pauseMenu;
 
     public HUD(Handler handler, Game game) {
-        this.game = game;
-        this.handler = handler;
         this.sidebar = new Sidebar(handler,game);
+        this.upgradeBar = new Upgradebar(game, handler);
+        this.pauseMenu = new PauseMenu(handler);
 
         ImageIcon iconC = new ImageIcon("src/main/data/hud/coin.png");
         this.coin = iconC.getImage();
         ImageIcon iconH = new ImageIcon("src/main/data/hud/heart.png");
         this.health = iconH.getImage();
-        try {
-            InputStream is = new BufferedInputStream(new FileInputStream("src/main/data/font/ComicSansMS3.ttf"));
-            Font comicSans = Font.createFont(Font.TRUETYPE_FONT, is);
-            this.fontS = comicSans.deriveFont(24f);
-            this.fontB = comicSans.deriveFont(120f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FontFormatException e) {
-            e.printStackTrace();
-        }
     }
 
     public void tick() {
         sidebar.tick();
+        upgradeBar.tick();
+        pauseMenu.tick();
     }
 
     public void render(Graphics g) {
@@ -53,10 +40,12 @@ public class HUD extends UI {
         g.setFont(fontS);
         g.drawImage(coin, 920, 15, null);
         g.drawImage(health, 800, 15, null);
-        g.drawString(COIN + "", 970, 45);
-        g.drawString(HEALTH + "", 850, 45);
+        g.drawString(Map.COIN + "", 970, 45);
+        g.drawString(Map.HEALTH + "", 850, 45);
 
         sidebar.render(g);
+        upgradeBar.render(g);
+        pauseMenu.render(g);
     }
 
     //Check if we are hovering over button
@@ -77,5 +66,13 @@ public class HUD extends UI {
 
     public Sidebar getSidebar() {
         return sidebar;
+    }
+
+    public Upgradebar getUpgradeBar() {
+        return upgradeBar;
+    }
+
+    public PauseMenu getPauseMenu() {
+        return pauseMenu;
     }
 }

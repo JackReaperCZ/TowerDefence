@@ -1,14 +1,13 @@
 package Game.HUD;
 
 import Game.Game;
-import Game.GameObject;
 import Game.Handler;
+import Game.Map.Map;
 import Game.Towers.Cannon;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.*;
 
 public class Sidebar extends UI {
     private boolean sideBarOpened = false;
@@ -23,24 +22,10 @@ public class Sidebar extends UI {
     public Sidebar(Handler handler, Game game) {
         this.handler = handler;
         this.game = game;
-        try {
-            InputStream is = new BufferedInputStream(new FileInputStream("src/main/data/font/ComicSansMS3.ttf"));
-            Font comicSans = Font.createFont(Font.TRUETYPE_FONT, is);
-            this.fontS = comicSans.deriveFont(Font.BOLD, 24f);
-            this.fontB = comicSans.deriveFont(120f);
-
-            ImageIcon iconC = new ImageIcon("src/main/data/hud/coin.png");
-            this.coin = iconC.getImage();
-            ImageIcon icon = new ImageIcon("src/main/data/towers/cannon/cannon.png");
-            this.cannon = icon.getImage();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FontFormatException e) {
-            e.printStackTrace();
-        }
+        ImageIcon iconC = new ImageIcon("src/main/data/hud/coin.png");
+        this.coin = iconC.getImage();
+        ImageIcon icon = new ImageIcon("src/main/data/towers/cannon/cannon.png");
+        this.cannon = icon.getImage();
     }
 
     @Override
@@ -111,39 +96,42 @@ public class Sidebar extends UI {
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-
-        if (sideBarOpened) {
-            if (mouseOver(mx, my, sideBarXREF + 0, 0, 75, 75)) {
-                closeSideBar();
-            }
-            if (mouseOver(mx, my, sideBarXREF - 145, 5, 140, 140)) {
-                if (HUD.COIN >= Cannon.PRICE) {
-                    setDummy(new Dummy(handler, new Cannon(0, 0, handler)));
-                    game.addListenerForDummy(getDummy());
-                    closeSideBar();
+        if (Game.gameState == Game.STATE.GAME) {
+            if (!game.getHud().getUpgradeBar().isUpgradeBarOpened()) {
+                if (sideBarOpened) {
+                    if (mouseOver(mx, my, sideBarXREF + 0, 0, 75, 75)) {
+                        closeSideBar();
+                    }
+                    if (mouseOver(mx, my, sideBarXREF - 145, 5, 140, 140)) {
+                        if (Map.COIN >= Cannon.PRICE) {
+                            setDummy(new Dummy(handler, new Cannon(0, 0, handler)));
+                            game.addListenerForDummy(getDummy());
+                            closeSideBar();
+                        } else {
+                            //Play sound effect
+                        }
+                    }
                 } else {
-                    //Play sound effect
+                    if (mouseOver(mx, my, sideBarXREF + 0, 0, 75, 75)) {
+                        opedSideBar();
+                        if (getDummy() != null) {
+                            game.removeListenerForDummy(getDummy());
+                            setDummy(null);
+                        }
+                    }
                 }
-            }
-        } else {
-            if (mouseOver(mx, my, sideBarXREF + 0, 0, 75, 75)) {
-                opedSideBar();
                 if (getDummy() != null) {
-                    game.removeListenerForDummy(getDummy());
-                    setDummy(null);
+                    if (getDummy().place()) {
+                        if (getDummy().getTower() instanceof Cannon) {
+                            handler.addGameObject(new Cannon(getDummy().getX() - 38, getDummy().getY() - 38, handler));
+                        }
+                        Map.COIN -= Cannon.PRICE;
+                        game.removeListenerForDummy(getDummy());
+                        setDummy(null);
+                    } else {
+                        //Play sound effect
+                    }
                 }
-            }
-        }
-        if (getDummy() != null) {
-            if (getDummy().place()) {
-                if (getDummy().getTower() instanceof Cannon) {
-                    handler.addGameObject(new Cannon(getDummy().getX() - 38, getDummy().getY() - 38, handler));
-                }
-                HUD.COIN -= Cannon.PRICE;
-                game.removeListenerForDummy(getDummy());
-                setDummy(null);
-            } else {
-                //Play sound effect
             }
         }
     }
