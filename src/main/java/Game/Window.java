@@ -3,8 +3,6 @@ package Game;
 import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Canvas;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 public class Window extends Canvas {
     public Window(int width, int height, String title, Game game) {
