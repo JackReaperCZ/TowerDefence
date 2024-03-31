@@ -2,7 +2,6 @@ package Game;
 
 import Game.HUD.Dummy;
 import Game.HUD.HUD;
-import Game.Towers.Cannon;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -23,7 +22,7 @@ public class Game extends Canvas implements Runnable {
         PAUSE
     }
 
-    public static STATE gameState = STATE.GAME;
+    public static STATE gameState = STATE.MENU;
 
     //Declaration of handler of game objects
     private Handler handler;
@@ -44,15 +43,20 @@ public class Game extends Canvas implements Runnable {
         //Initialization of the HUD
         this.hud = new HUD(handler,this);
         //Initialization of the Game.Menu
-        this.menu = new Menu(this, handler);
+        this.menu = new Menu(handler);
         //Initialization of the KeyInput
         this.keyInput = new KeyInput(handler, this);
-        //Test objects
-        handler.addGameObject(new Cannon(340, 260, handler));
-        handler.addGameObject(new Cannon(15, 460, handler));
+        //KeyInput
         this.addKeyListener(keyInput);
+
+        //Mouse input for menu
+        this.addMouseListener(menu);
+
+        //Mouse input for hud
         this.addMouseListener(hud);
         this.addMouseListener(hud.getSidebar());
+        this.addMouseListener(hud.getUpgradeBar());
+        this.addMouseListener(hud.getPauseMenu());
         //Creating a main window
         new Window(WIDTH, HEIGHT, "Tower Defence", this);
     }
@@ -125,7 +129,7 @@ public class Game extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
 
-        if (gameState == STATE.GAME) {
+        if (gameState == STATE.GAME || gameState == STATE.PAUSE) {
             handler.render(g);
             hud.render(g);
         } else if (gameState == STATE.MENU) {
@@ -143,7 +147,7 @@ public class Game extends Canvas implements Runnable {
     public void addListenerForDummy(Dummy dummy){
         this.addMouseMotionListener(dummy);
     }
-        public void removeListenerForDummy(Dummy dummy){
+    public void removeListenerForDummy(Dummy dummy){
         this.removeMouseMotionListener(dummy);
     }
 }

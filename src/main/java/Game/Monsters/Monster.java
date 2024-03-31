@@ -3,6 +3,7 @@ package Game.Monsters;
 import Game.GameObject;
 import Game.Handler;
 import Game.ID;
+import Game.Towers.Projectile.Projectile;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -20,6 +21,7 @@ public class Monster extends GameObject {
     protected int gold;
     //The speed of the monster
     protected int speed;
+    protected int progression = 0;
     protected int xToGo;
     protected int yToGo;
     protected int flag = 0;
@@ -31,12 +33,13 @@ public class Monster extends GameObject {
         this.handler = handler;
         this.speed = speed;
         dmg = 10;
-        hp = 5;
+        hp = 360;
     }
     //Tick method
     @Override
     public void tick() {
         collision();
+        progression += speed;
         if (x == xToGo && y == yToGo){
             flag++;
             handler.map.nextFlag(flag,this);
@@ -55,7 +58,8 @@ public class Monster extends GameObject {
         for (GameObject go: handler.objects) {
             if (go.getId() == ID.Projectile && getBounds().intersects(go.getBounds())){
                 handler.removeGameObject(go);
-                hp--;
+                Projectile p = (Projectile) go;
+                hp -= p.getDmg();
                 if (hp <= 0){
                     handler.removeGameObject(this);
                 }
@@ -125,5 +129,13 @@ public class Monster extends GameObject {
 
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    public int getProgression() {
+        return progression;
+    }
+
+    public void setProgression(int progression) {
+        this.progression = progression;
     }
 }

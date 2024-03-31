@@ -12,7 +12,6 @@ public class Menu extends MouseAdapter {
     private Image background;
     private Font fontB;
     private Font fontS;
-    private Game game;
     private Handler handler;
     private File[] maps;
 
@@ -23,8 +22,7 @@ public class Menu extends MouseAdapter {
 
     private MENU openedMenu = MENU.MAIN;
 
-    public Menu(Game game, Handler handler) {
-        this.game = game;
+    public Menu(Handler handler) {
         this.handler = handler;
         this.maps = getActiveMaps();
         ImageIcon icon = new ImageIcon("src/main/data/menu/menu_background.png");
@@ -42,6 +40,7 @@ public class Menu extends MouseAdapter {
             e.printStackTrace();
         }
     }
+
     //Render method
     public void render(Graphics g) {
         g.drawImage(background, 0, 0, null);
@@ -105,6 +104,7 @@ public class Menu extends MouseAdapter {
         }
         return false;
     }
+
     //Gets all maps from map directory
     private File[] getActiveMaps() {
         try {
@@ -128,33 +128,35 @@ public class Menu extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        switch (openedMenu) {
-            case MAIN -> {
-                //Play button
-                if (mouseOver(mx, my, 70, 300, 300, 100)) {
-                    this.openedMenu = MENU.MAP_SELECT;
+        if (Game.gameState == Game.STATE.MENU) {
+            switch (openedMenu) {
+                case MAIN -> {
+                    //Play button
+                    if (mouseOver(mx, my, 70, 300, 300, 100)) {
+                        this.openedMenu = MENU.MAP_SELECT;
+                    }
+                    //Exit button
+                    if (mouseOver(mx, my, 70, 425, 300, 100)) {
+                        System.exit(0);
+                    }
                 }
-                //Exit button
-                if (mouseOver(mx, my, 70, 425, 300, 100)) {
-                    System.exit(0);
-                }
-            }
-            case MAP_SELECT -> {
-                //Map slots
-                for (int i = 0; i <= 1; i++) {
-                    for (int y = 0; y <= 3; y++) {
-                        if ((i * 4) + y < maps.length) {
-                            if (mouseOver(mx, my, 18 + ((238 + 25) * y), 200 + (204 * i), 238, 179)) {
-                                this.handler.setMap(new Map(handler, maps[(i * 4) + y].getAbsolutePath() + "/"));
-                                game.removeMouseListener(this);
-                                Game.gameState = Game.STATE.GAME;
+                case MAP_SELECT -> {
+                    //Map slots
+                    for (int i = 0; i <= 1; i++) {
+                        for (int y = 0; y <= 3; y++) {
+                            if ((i * 4) + y < maps.length) {
+                                if (mouseOver(mx, my, 18 + ((238 + 25) * y), 200 + (204 * i), 238, 179)) {
+                                    this.handler.setMap(new Map(handler, maps[(i * 4) + y].getAbsolutePath() + "/"));
+                                    this.openedMenu = MENU.MAIN;
+                                    Game.gameState = Game.STATE.GAME;
+                                }
                             }
                         }
                     }
-                }
-                //Back button
-                if (mouseOver(mx, my, 18, 630, 125, 125)) {
-                    this.openedMenu = MENU.MAIN;
+                    //Back button
+                    if (mouseOver(mx, my, 18, 630, 125, 125)) {
+                        this.openedMenu = MENU.MAIN;
+                    }
                 }
             }
         }
