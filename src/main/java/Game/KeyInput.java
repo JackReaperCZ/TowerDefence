@@ -2,6 +2,7 @@ package Game;
 
 import Game.HUD.Dummy;
 import Game.HUD.HUD;
+import Game.Map.Map;
 import Game.Towers.Cannon;
 
 import java.awt.event.KeyAdapter;
@@ -26,34 +27,45 @@ public class KeyInput extends KeyAdapter {
         int key = e.getKeyCode();
         System.out.println(key);
         switch (key) {
+            //Left
             case 39 -> {
-                game.getHud().getSidebar().opedSideBar();
-                if (game.getHud().getSidebar().getDummy() != null) {
-                   game.removeListenerForDummy(game.getHud().getSidebar().getDummy());
-                   game.getHud().getSidebar().setDummy(null);
+                if (Game.gameState == Game.STATE.GAME) {
+                    game.getHud().getSidebar().opedSideBar();
+                    if (game.getHud().getSidebar().getDummy() != null) {
+                        game.removeListenerForDummy(game.getHud().getSidebar().getDummy());
+                        game.getHud().getSidebar().setDummy(null);
+                    }
                 }
             }
+            //Right
             case 37 -> {
-                game.getHud().getSidebar().closeSideBar();
-            }
-            case 67 -> {
-                if (HUD.COIN > Cannon.PRICE) {
-                    game.getHud().getSidebar().setDummy(new Dummy(handler, new Cannon(0, 0, handler)));
-                    game.addListenerForDummy(game.getHud().getSidebar().getDummy());
+                if (Game.gameState == Game.STATE.GAME) {
                     game.getHud().getSidebar().closeSideBar();
-                } else {
-                    //Play sound effect
+                }
+            }
+            //C
+            case 67 -> {
+                if (Game.gameState == Game.STATE.GAME) {
+                    if (Map.COIN > Cannon.PRICE) {
+                        game.getHud().getSidebar().setDummy(new Dummy(handler, new Cannon(0, 0, handler)));
+                        game.addListenerForDummy(game.getHud().getSidebar().getDummy());
+                        game.getHud().getSidebar().closeSideBar();
+                        game.getHud().getUpgradeBar().closeUpgradeBar();
+                    } else {
+                        //Play sound effect
+                    }
+                }
+            }
+            //ESC
+            case 27 -> {
+                if (Game.gameState == Game.STATE.PAUSE){
+                    Game.gameState = Game.STATE.GAME;
+                } else if (Game.gameState == Game.STATE.GAME){
+                    Game.gameState = Game.STATE.PAUSE;
                 }
             }
         }
     }
-
-    //Method to get released key
-    @Override
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
