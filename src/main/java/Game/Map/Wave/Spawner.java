@@ -1,25 +1,94 @@
 package Game.Map.Wave;
 
+import Game.Game;
 import Game.Handler;
 import Game.Map.Path;
 import Game.Monsters.Monster;
+import Game.Monsters.Slime;
+import Game.Monsters.Type;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 public class Spawner {
-    private int counter = 0;
-    private Path path;
-    private Handler handler;
+    //Arraylist of waves in this map
+    private ArrayList<Wave> waves = new ArrayList<>();
+    //Wave counter in ticks
+    public static int WAVE_COUNTER = 0;
+    //Index of th wave
+    public static int ACTUAL_WAVE = 0;
+    //Wave timer in seconds
+    public static int WAVE_TIMER = 0;
+    //Control variable for switching spawning of monsters
+    public static boolean SPAWN = false;
 
     public Spawner(Path path, Handler handler, String sourcePath) {
-        this.handler = handler;
-        this.path = path;
-    }
-    public void tick(){
-        if (counter == 240){
-            Monster m = new Monster(path.getFlag(0).getX(),path.getFlag(0).getY(),2,handler);
-            m.goTo(path.getFlag(1).getX(),path.getFlag(1).getY());
-            handler.addGameObject(m);
-            counter = 0;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(sourcePath + "/waves.txt"));
+            br.readLine(); // Get head out
+            String line = br.readLine();
+            int waveId = 0;
+            while (line != null) {
+                switch (line.charAt(0)) {
+                    case ' ' -> {
+                        //Getting parameters from string
+                        String[] spawnNodeStrings = line.substring(1).split(",");
+                        int time = Integer.parseInt(spawnNodeStrings[0]);
+                        String mosterName = spawnNodeStrings[1];
+                        int count = Integer.parseInt(spawnNodeStrings[2]);
+                        int gap = Integer.parseInt(spawnNodeStrings[3]);
+                        Type type = Type.valueOf(spawnNodeStrings[4]);
+
+                        Monster m = null;
+
+                        //Creating monster
+                        switch (mosterName) {
+                            case "slime" -> {
+                                m = new Slime(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
+                            }
+                        }
+                        m.goTo(path.getFlag(1).getX(), path.getFlag(1).getY());
+
+                        //Creating and adding spawn node to the wave
+                        this.waves.get(waveId - 1).addSpawnNode(new SpawnNode(time, m, count, gap));
+                    }
+                    case 'w' -> {
+                        waveId++;
+                        this.waves.add(new Wave(handler));
+                    }
+                }
+                line = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        counter++;
+    }
+    //Tick method
+    public void tick() {
+        if (SPAWN && Game.gameState == Game.STATE.GAME) {
+            if (WAVE_COUNTER == 120) {
+                WAVE_COUNTER = 0;
+                WAVE_TIMER++;
+                System.out.println(WAVE_TIMER);
+            } else {
+                WAVE_COUNTER++;
+            }
+            try {
+                this.waves.get(ACTUAL_WAVE).spawnReady();
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
+            if (this.waves.get(ACTUAL_WAVE).isDone()) {
+                WAVE_TIMER = 0;
+                WAVE_COUNTER = 0;
+                ACTUAL_WAVE++;
+                SPAWN = false;
+            }
+        }
+    }
+    //Getters and setters
+    public void setSpawn(boolean spawn) {
+        this.SPAWN = spawn;
     }
 }
