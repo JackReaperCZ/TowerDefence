@@ -15,12 +15,16 @@ public class Map {
     public static int COIN = 10000;
     //Gold variable
     public static int HEALTH = 100;
+    //Path
     private Path path;
+    //Spawner
     private Spawner spawner;
+    //Handler
     private Handler handler;
+    //Map image (background)
     private Image image;
 
-
+    //Constructor
     public Map(Handler handler,String sourcePath) {
         ImageIcon icon = new ImageIcon(sourcePath + "map.png");
         this.image = icon.getImage();
@@ -72,5 +76,13 @@ public class Map {
             }
         }
         return ar;
+    }
+    //Getters and setters
+    public Spawner getSpawner() {
+        return spawner;
+    }
+
+    public void setSpawner(Spawner spawner) {
+        this.spawner = spawner;
     }
 }

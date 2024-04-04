@@ -3,7 +3,7 @@ package Game.Monsters.Comparators;
 import Game.Monsters.Monster;
 
 import java.util.Comparator;
-
+//Comparator that compares by progression
 public class ProgressionComparator implements Comparator<Monster> {
     @Override
     public int compare(Monster o1, Monster o2) {

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 
 import Game.Map.Map;
+import Game.Map.Wave.Spawner;
 
 
 public class Handler {
@@ -39,10 +40,15 @@ public class Handler {
             }
         }
     }
+    //Clears handler and setts all static variables to the default value
     public void clearHandler(){
         this.map = null;
         Map.COIN = 10000;
         Map.HEALTH = 100;
+        Spawner.SPAWN = false;
+        Spawner.WAVE_COUNTER = 0;
+        Spawner.ACTUAL_WAVE = 0;
+        Spawner.WAVE_TIMER = 0;
         objects.clear();
         toRemove.clear();
         toAdd.clear();
@@ -71,7 +77,7 @@ public class Handler {
     public void removeGameObject(GameObject gameObject) {
         this.toRemove.add(gameObject);
     }
-
+    //Getters and setters
     public void setMap(Map map) {
         this.map = map;
     }
