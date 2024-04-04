@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class Path {
+    //Source path of the map folder
     private String sourcePath;
+    //Arraylist of flags
     private ArrayList<Flag> flags = new ArrayList<>();
 
     //Constructor
@@ -22,6 +24,7 @@ public class Path {
     public void loadFlags() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(sourcePath + "path.txt"));
+            br.readLine(); // Get head out
             String line = br.readLine();
             while (line != null) {
                 String[] valuesS = line.split(",");

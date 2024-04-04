@@ -100,6 +100,7 @@ public abstract class Tower extends GameObject {
         //Getting cost of upgrades
         try {
             BufferedReader br = new BufferedReader(new FileReader("src/main/data/towers/" + this.towerName + "/upgrades.txt"));
+            br.readLine(); // Get head out
             String line = br.readLine();
             while (line != null) {
                 String[] valuesS = line.split(",");
