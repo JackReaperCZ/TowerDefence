@@ -21,6 +21,7 @@ public abstract class Tower extends GameObject {
     //Name of the tower for finding files
     protected String towerName;
     protected Handler handler;
+    protected int price;
     protected int dmg;
     //Radius at the tower will see the enemy
     protected Integer radius;
@@ -156,6 +157,24 @@ public abstract class Tower extends GameObject {
         return Math.atan2(deltaY, deltaX);
     }
 
+    public void nextShootingStyle(){
+        switch (shootingStyle){
+            case FIRST -> shootingStyle = SHOOTING_STYLE.LAST;
+            case LAST -> shootingStyle = SHOOTING_STYLE.WEAK;
+            case WEAK -> shootingStyle = SHOOTING_STYLE.STRONG;
+            case STRONG -> shootingStyle = SHOOTING_STYLE.FIRST;
+        }
+    }
+
+    public void previousShootingStyle(){
+        switch (shootingStyle){
+            case FIRST -> shootingStyle = SHOOTING_STYLE.STRONG;
+            case LAST -> shootingStyle = SHOOTING_STYLE.FIRST;
+            case WEAK -> shootingStyle = SHOOTING_STYLE.LAST;
+            case STRONG -> shootingStyle = SHOOTING_STYLE.WEAK;
+        }
+    }
+
     //Tick method
     @Override
     public void tick() {
@@ -231,5 +250,12 @@ public abstract class Tower extends GameObject {
 
     public void setRenderRadius(boolean renderRadius) {
         this.renderRadius = renderRadius;
+    }
+
+    public SHOOTING_STYLE getShootingStyle() {
+        return shootingStyle;
+    }
+    public int getPrice(){
+        return price;
     }
 }
