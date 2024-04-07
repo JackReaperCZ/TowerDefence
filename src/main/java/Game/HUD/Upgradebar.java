@@ -2,21 +2,20 @@ package Game.HUD;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.*;
 
 import Game.*;
 import Game.Map.Map;
+import Game.Map.MapStatus;
 import Game.Towers.Tower;
 
 import javax.swing.*;
 
 public class Upgradebar extends UI {
-    private Game game;
-    private Handler handler;
-    private Image coin;
+    private final Game game;
+    private final Handler handler;
+    private final Image coin;
     private Tower selectedTower;
     private int upgradeBarXREF = 0;
-    private int velX = 20;
     private boolean upgradeBarOpened = false;
 
     public Upgradebar(Game game, Handler handler) {
@@ -35,6 +34,39 @@ public class Upgradebar extends UI {
         this.upgradeBarOpened = false;
     }
 
+    public String getUpgradeMsg(int i) {
+        switch (i) {
+            case 0 -> {
+                if (selectedTower.getUpgrades()[i] == null) {
+                    return "+" + (10) + "% range";
+                } else if (selectedTower.getUpgrades()[i] == 3) {
+                    return "+30% range";
+                } else {
+                    return "+" + ((selectedTower.getUpgrades()[i] + 1) * 10) + "% range";
+                }
+            }
+            case 1 -> {
+                if (selectedTower.getUpgrades()[i] == null) {
+                    return "+" + (10) + "% fire rate";
+                } else if (selectedTower.getUpgrades()[i] == 3) {
+                    return "+30% fire rate";
+                } else {
+                    return "+" + ((selectedTower.getUpgrades()[i] + 1) * 10) + "% fire rate";
+                }
+            }
+            case 2 -> {
+                if (selectedTower.getUpgrades()[i] == null) {
+                    return "+" + (10) + "% damage";
+                } else if (selectedTower.getUpgrades()[i] == 3) {
+                    return "+30% damage";
+                } else {
+                    return "+" + ((selectedTower.getUpgrades()[i] + 1) * 10) + "% damage";
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public void render(Graphics g) {
         if (selectedTower != null) {
@@ -50,7 +82,7 @@ public class Upgradebar extends UI {
                     g.drawImage(selectedTower.getUpgrade_images()[i][selectedTower.getUpgrades()[i] - 1], upgradeBarXREF - 280, 20, 260, 260, null);
                 }
             }
-            int cost = 0;
+            int cost;
             //Rendering upgrade buttons
             for (int i = 0; i <= 2; i++) {
                 g.setColor(new Color(196, 164, 132));
@@ -80,44 +112,35 @@ public class Upgradebar extends UI {
                 }
                 g.drawImage(coin, upgradeBarXREF - 265, 345 + (105 * i), 35, 35, null);
 
-                String upgrade_msg = null;
+                g.drawString(getUpgradeMsg(i), upgradeBarXREF - 185, 350 + (105 * i));
 
-                switch (i) {
-                    case 0 -> {
-                        if (selectedTower.getUpgrades()[i] == null) {
-                            upgrade_msg = "+" + (10) + "% range";
-                        } else if (selectedTower.getUpgrades()[i] == 3) {
-                            upgrade_msg = "+30% range";
-                        } else {
-                            upgrade_msg = "+" + ((selectedTower.getUpgrades()[i] + 1) * 10) + "% range";
-                        }
-                    }
-                    case 1 -> {
-                        if (selectedTower.getUpgrades()[i] == null) {
-                            upgrade_msg = "+" + (10) + "% fire rate";
-                        } else if (selectedTower.getUpgrades()[i] == 3) {
-                            upgrade_msg = "+30% fire rate";
-                        } else {
-                            upgrade_msg = "+" + ((selectedTower.getUpgrades()[i] + 1) * 10) + "% fire rate";
-                        }
-                    }
-                    case 2 -> {
-                        if (selectedTower.getUpgrades()[i] == null) {
-                            upgrade_msg = "+" + (10) + "% damage";
-                        } else if (selectedTower.getUpgrades()[i] == 3) {
-                            upgrade_msg = "+30% damage";
-                        } else {
-                            upgrade_msg = "+" + ((selectedTower.getUpgrades()[i] + 1) * 10) + "% damage";
-                        }
-                    }
+                String msg = "";
+
+                //Draw firing mode switch
+                switch (selectedTower.getShootingStyle()) {
+                    case LAST -> msg = "<< SHOOT LAST >>";
+                    case FIRST -> msg = "<< SHOOT FIRST >>";
+                    case STRONG -> msg = "<< SHOOT STRONG >>";
+                    case WEAK -> msg = "<< SHOOT WEAK >>";
                 }
-                g.drawString(upgrade_msg, upgradeBarXREF - 185, 350 + (105 * i));
+                //Draw render button
+                g.drawString(msg, upgradeBarXREF - 270, 650);
+
+                g.setColor(new Color(88, 0, 0));
+                g.fillRoundRect(upgradeBarXREF - 290, 665, 280, 75, 20, 20);
+
+                g.setColor(Color.RED);
+                g.fillRoundRect(upgradeBarXREF - 285, 670, 270, 65, 20, 20);
+
+                g.setColor(Color.WHITE);
+                g.drawString("SELL", upgradeBarXREF - 180, 710);
             }
         }
     }
 
     @Override
     public void tick() {
+        int velX = 20;
         if (upgradeBarOpened) {
             if (upgradeBarXREF != 300) {
                 upgradeBarXREF += velX;
@@ -133,10 +156,10 @@ public class Upgradebar extends UI {
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        boolean cliced = false;
+        boolean clicked = false;
         Tower lastTower = selectedTower;
         Point p = new Point(mx, my);
-        if (Game.gameState == Game.STATE.GAME) {
+        if (Game.gameState == Game.STATE.GAME && Map.mapStatus == MapStatus.IN_PROGRESS) {
             if (upgradeBarOpened) {
                 for (int i = 0; i <= 2; i++) {
                     if (mouseOver(mx, my, upgradeBarXREF - 290, 300 + (105 * i), 95, 95)) {
@@ -163,25 +186,42 @@ public class Upgradebar extends UI {
                         }
                     }
                 }
+                if (mouseOver(mx, my, upgradeBarXREF - 300, 620, 150, 45)) {
+                    selectedTower.previousShootingStyle();
+                }
+                if (mouseOver(mx, my, upgradeBarXREF - 150, 620, 150, 45)) {
+                    selectedTower.nextShootingStyle();
+                }
+                if (mouseOver(mx, my, upgradeBarXREF - 285, 670, 270, 65)) {
+                    int cost = selectedTower.getPrice();
+                    for (Integer y : selectedTower.getUpgrades()) {
+                        if (y != null) {
+                            cost += y * 100;
+                        }
+                    }
+                    Map.COIN += cost;
+                    closeUpgradeBar();
+                    handler.removeGameObject(selectedTower);
+                }
             }
             if (mouseOver(mx, my, upgradeBarXREF - 300, 0, 300, 750)) {
-                cliced = true;
+                clicked = true;
             } else {
                 for (GameObject go : handler.objects) {
                     if (go.getId() == ID.Tower && go.getBounds().contains(p)) {
                         selectedTower = (Tower) go;
                         selectedTower.setRenderRadius(true);
-                        cliced = true;
+                        clicked = true;
                         openUpgradeBar();
                     }
                 }
             }
-            if (cliced) {
+            if (clicked) {
                 if (lastTower != selectedTower && lastTower != null) {
                     lastTower.setRenderRadius(false);
                 }
             }
-            if (!cliced) {
+            if (!clicked) {
                 closeUpgradeBar();
                 if (selectedTower != null) {
                     selectedTower.setRenderRadius(false);
