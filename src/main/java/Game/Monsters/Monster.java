@@ -3,6 +3,7 @@ package Game.Monsters;
 import Game.GameObject;
 import Game.Handler;
 import Game.ID;
+import Game.Map.Map;
 import Game.Towers.Projectile.Projectile;
 
 import javax.swing.*;
@@ -98,6 +99,7 @@ public abstract class Monster extends GameObject implements Cloneable {
                 hp -= p.getDmg();
                 if (hp <= 0) {
                     handler.removeGameObject(this);
+                    Map.COIN += this.gold;
                 }
             }
         }
