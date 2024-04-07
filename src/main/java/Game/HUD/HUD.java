@@ -3,6 +3,7 @@ package Game.HUD;
 import Game.Handler;
 import Game.Game;
 import Game.Map.Map;
+import Game.Map.MapStatus;
 import Game.Map.Wave.Spawner;
 
 import javax.swing.*;
@@ -11,13 +12,16 @@ import java.awt.event.MouseEvent;
 
 //Class for HUD rendering layout
 public class HUD extends UI {
+
     private Image coin;
     private Image health;
     private Sidebar sidebar;
     private Upgradebar upgradeBar;
     private PauseMenu pauseMenu;
+    private Handler handler;
 
     public HUD(Handler handler, Game game) {
+        this.handler = handler;
         this.sidebar = new Sidebar(handler, game);
         this.upgradeBar = new Upgradebar(game, handler);
         this.pauseMenu = new PauseMenu(handler);
@@ -44,19 +48,65 @@ public class HUD extends UI {
         g.drawString(Map.HEALTH + "", 850, 45);
 
         //Wave counter and play button
-        g.drawString("WAVE : " + (Spawner.ACTUAL_WAVE + 1), (Game.WIDTH / 2) - 50, 35);
-        if (!Spawner.SPAWN) {
-            g.setColor(new Color(150, 105, 25));
-            g.fillRoundRect(Game.WIDTH - 235, Game.HEIGHT - 120, 200, 70, 20, 20);
+        if (Spawner.ACTUAL_WAVE >= this.handler.getMap().getSpawner().getWaves().size() - 1) {
+            g.drawString("WAVE : LAST", (Game.WIDTH / 2) - 50, 35);
+        } else {
+            g.drawString("WAVE : " + (Spawner.ACTUAL_WAVE + 1), (Game.WIDTH / 2) - 50, 35);
+        }
+        //Next wave button
+        if (!(Spawner.ACTUAL_WAVE == this.handler.getMap().getSpawner().getWaves().size())) {
+            if (!Spawner.SPAWN && Map.mapStatus == MapStatus.IN_PROGRESS) {
+                g.setColor(new Color(150, 105, 25));
+                g.fillRoundRect(Game.WIDTH - 235, Game.HEIGHT - 120, 200, 70, 20, 20);
 
-            g.setColor(new Color(196, 164, 132));
-            g.fillRoundRect(Game.WIDTH - 230, Game.HEIGHT - 115, 190, 60, 20, 20);
+                g.setColor(new Color(196, 164, 132));
+                g.fillRoundRect(Game.WIDTH - 230, Game.HEIGHT - 115, 190, 60, 20, 20);
 
-            g.setColor(Color.WHITE);
-            g.drawString("NEXT WAVE >>", Game.WIDTH - 225, Game.HEIGHT - 80);
+                g.setColor(Color.WHITE);
+                g.drawString("NEXT WAVE >>", Game.WIDTH - 225, Game.HEIGHT - 75);
+            }
         }
         sidebar.render(g);
         upgradeBar.render(g);
+        //render win and lost screen
+        if (Map.mapStatus != MapStatus.IN_PROGRESS) {
+            int x = Game.WIDTH;
+            int y = Game.HEIGHT;
+            g.setColor(new Color(210, 210, 210, 131));
+            g.fillRect(0, 0, x, y);
+
+            g.setColor(Color.WHITE);
+            g.setFont(fontB);
+            switch (Map.mapStatus) {
+                case WON -> {
+                    g.drawString("GAME WON", (x / 2) - 350, 200);
+                }
+                case LOST -> {
+                    g.drawString("GAME OVER", (x / 2) - 350, 200);
+                }
+            }
+
+            //Render buttons
+            for (int i = 0; i <= 1; i++) {
+                g.setFont(fontS);
+                g.setColor(new Color(150, 105, 25));
+                g.fillRoundRect((x / 2) - 100, (y / 2) - 65 + (i * 85), 200, 75, 20, 20);
+
+                g.setColor(new Color(196, 164, 132));
+                g.fillRoundRect((x / 2) - 95, (y / 2) - 60 + (i * 85), 190, 65, 20, 20);
+
+                g.setColor(Color.WHITE);
+                switch (i) {
+                    case 0 -> {
+                        g.drawString("RESTART", (x / 2) - 60, (y / 2) - 20);
+                    }
+                    case 1 -> {
+                        g.drawString("MAIN MENU", (x / 2) - 80, (y / 2) + 65);
+                    }
+                }
+            }
+        }
+
         pauseMenu.render(g);
     }
 
@@ -64,10 +114,24 @@ public class HUD extends UI {
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-
-        if (!Spawner.SPAWN && Game.gameState == Game.STATE.GAME) {
-            if (mouseOver(mx, my, Game.WIDTH - 235, Game.HEIGHT - 120, 200, 70)) {
-                Spawner.SPAWN = true;
+        if (Game.gameState == Game.STATE.GAME) {
+            if (!(Spawner.ACTUAL_WAVE == this.handler.getMap().getSpawner().getWaves().size())) {
+                if (!Spawner.SPAWN && Map.mapStatus == MapStatus.IN_PROGRESS) {
+                    if (mouseOver(mx, my, Game.WIDTH - 235, Game.HEIGHT - 120, 200, 70)) {
+                        Spawner.SPAWN = true;
+                    }
+                }
+            }
+            if (Map.mapStatus != MapStatus.IN_PROGRESS) {
+                if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, (Game.HEIGHT / 2) - 65, 200, 75)) {
+                    String sourcepath = this.handler.getMap().getSourcePath();
+                    handler.clearHandler();
+                    this.handler.setMap(new Map(handler, sourcepath));
+                }
+                if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, (Game.HEIGHT / 2) + 20, 200, 75)) {
+                    handler.clearHandler();
+                    Game.gameState = Game.STATE.MENU;
+                }
             }
         }
     }
