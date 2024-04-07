@@ -7,6 +7,7 @@ public class Slime extends Monster {
         super(x, y, type, handler);
         this.speed = 2;
         this.dmg = 10;
+        this.gold = 15;
         this.hp = 50;
         this.name = "slime";
         getAssets();
