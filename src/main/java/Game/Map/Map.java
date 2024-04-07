@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import Game.GameObject;
 import Game.Handler;
+import Game.ID;
 import Game.Map.Wave.Spawner;
 import Game.Monsters.Monster;
 
@@ -23,9 +25,13 @@ public class Map {
     private Handler handler;
     //Map image (background)
     private Image image;
+    //Actual map status
+    public static MapStatus mapStatus = MapStatus.IN_PROGRESS;
+    private String sourcePath;
 
     //Constructor
     public Map(Handler handler,String sourcePath) {
+        this.sourcePath = sourcePath;
         ImageIcon icon = new ImageIcon(sourcePath + "map.png");
         this.image = icon.getImage();
         this.path = new Path(sourcePath);
@@ -35,6 +41,18 @@ public class Map {
     //Tick method
     public void tick(){
         spawner.tick();
+        if ((Spawner.ACTUAL_WAVE == this.handler.getMap().getSpawner().getWaves().size()) && !Spawner.SPAWN){
+            boolean monsterOnMap = false;
+            for (GameObject go : this.handler.objects){
+                if (go.getId() == ID.Monster){
+                    monsterOnMap = true;
+                    break;
+                }
+            }
+            if (!monsterOnMap){
+                Map.mapStatus = MapStatus.WON;
+            }
+        }
     }
 
     //Rendering of the map
@@ -46,6 +64,10 @@ public class Map {
         if (i == path.getFlags().size()-1){
             Map.HEALTH -= monster.getDmg();
             handler.removeGameObject(monster);
+            //Check if we didn't lose
+            if (HEALTH <= 0 && mapStatus != MapStatus.LOST){
+                mapStatus = MapStatus.LOST;
+            }
         } else {
             monster.goTo(path.getFlags().get(i+1).getX(),path.getFlags().get(i+1).getY());
         }
@@ -84,5 +106,9 @@ public class Map {
 
     public void setSpawner(Spawner spawner) {
         this.spawner = spawner;
+    }
+
+    public String getSourcePath() {
+        return sourcePath;
     }
 }
