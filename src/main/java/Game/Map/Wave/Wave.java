@@ -28,8 +28,8 @@ public class Wave {
     public Wave(Handler handler) {
         this.handler = handler;
     }
-    //Method to check if some spawn node has to spawn something
-    public void spawnReady() throws CloneNotSupportedException {
+    //tick method
+    public void tick() throws CloneNotSupportedException {
         if (!done) {
             if (spawnNodeDone) {
                 if (spawnNodes.get(spawnNodeFlag).getTime() == Spawner.WAVE_TIMER) {
