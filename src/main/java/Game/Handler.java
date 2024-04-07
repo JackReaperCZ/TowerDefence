@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 
 import Game.Map.Map;
+import Game.Map.MapStatus;
 import Game.Map.Wave.Spawner;
 
 
@@ -45,6 +46,7 @@ public class Handler {
         this.map = null;
         Map.COIN = 10000;
         Map.HEALTH = 100;
+        Map.mapStatus = MapStatus.IN_PROGRESS;
         Spawner.SPAWN = false;
         Spawner.WAVE_COUNTER = 0;
         Spawner.ACTUAL_WAVE = 0;
