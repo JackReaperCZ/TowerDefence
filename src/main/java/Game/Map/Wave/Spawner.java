@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Spawner {
     //Arraylist of waves in this map
-    private ArrayList<Wave> waves = new ArrayList<>();
+    private final ArrayList<Wave> waves = new ArrayList<>();
     //Wave counter in ticks
     public static int WAVE_COUNTER = 0;
     //Index of th wave
@@ -44,11 +44,11 @@ public class Spawner {
 
                         //Creating monster
                         switch (mosterName) {
-                            case "slime" -> {
-                                m = new Slime(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
-                            }
+                            case "slime" -> m = new Slime(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
                         }
-                        m.goTo(path.getFlag(1).getX(), path.getFlag(1).getY());
+                        if (m != null) {
+                            m.goTo(path.getFlag(1).getX(), path.getFlag(1).getY());
+                        }
 
                         //Creating and adding spawn node to the wave
                         this.waves.get(waveId - 1).addSpawnNode(new SpawnNode(time, m, count, gap));
@@ -70,12 +70,11 @@ public class Spawner {
             if (WAVE_COUNTER == 120) {
                 WAVE_COUNTER = 0;
                 WAVE_TIMER++;
-                System.out.println(WAVE_TIMER);
             } else {
                 WAVE_COUNTER++;
             }
             try {
-                this.waves.get(ACTUAL_WAVE).spawnReady();
+                this.waves.get(ACTUAL_WAVE).tick();
             } catch (CloneNotSupportedException e) {
                 throw new RuntimeException(e);
             }
@@ -87,8 +86,9 @@ public class Spawner {
             }
         }
     }
+
     //Getters and setters
-    public void setSpawn(boolean spawn) {
-        this.SPAWN = spawn;
+    public ArrayList<Wave> getWaves() {
+        return waves;
     }
 }
