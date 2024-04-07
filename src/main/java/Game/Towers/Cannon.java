@@ -1,6 +1,8 @@
 package Game.Towers;
 
 import Game.Handler;
+import Game.Map.Map;
+import Game.Map.MapStatus;
 import Game.Towers.Projectile.Cannonball;
 
 public class Cannon extends Tower {
@@ -12,13 +14,16 @@ public class Cannon extends Tower {
         this.coolDownFlag = 120;
         this.projectileCooldown = this.coolDownFlag;
         this.radius = 400;
+        this.price = 350;
         getTowerAssets();
     }
     //Shooting at the selected target
     @Override
     public void shoot(int xTarget,int yTarget){
-        angle = calculateAngle(xTarget,yTarget);
-        handler.addGameObject(new Cannonball(x + 19, y + 19, xTarget + 19, yTarget + 19, dmg, handler));
-        projectileCooldown = coolDownFlag;
+        if (Map.mapStatus == MapStatus.IN_PROGRESS) {
+            angle = calculateAngle(xTarget, yTarget);
+            handler.addGameObject(new Cannonball(x + 19, y + 19, xTarget + 19, yTarget + 19, dmg, handler));
+            projectileCooldown = coolDownFlag;
+        }
     }
 }
