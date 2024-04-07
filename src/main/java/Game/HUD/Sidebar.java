@@ -3,6 +3,7 @@ package Game.HUD;
 import Game.Game;
 import Game.Handler;
 import Game.Map.Map;
+import Game.Map.MapStatus;
 import Game.Towers.Cannon;
 
 import javax.swing.*;
@@ -96,10 +97,10 @@ public class Sidebar extends UI {
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        if (Game.gameState == Game.STATE.GAME) {
+        if (Game.gameState == Game.STATE.GAME && Map.mapStatus == MapStatus.IN_PROGRESS) {
             if (!game.getHud().getUpgradeBar().isUpgradeBarOpened()) {
                 if (sideBarOpened) {
-                    if (mouseOver(mx, my, sideBarXREF + 0, 0, 75, 75)) {
+                    if (mouseOver(mx, my, sideBarXREF, 0, 75, 75)) {
                         closeSideBar();
                     }
                     if (mouseOver(mx, my, sideBarXREF - 145, 5, 140, 140)) {
@@ -112,7 +113,7 @@ public class Sidebar extends UI {
                         }
                     }
                 } else {
-                    if (mouseOver(mx, my, sideBarXREF + 0, 0, 75, 75)) {
+                    if (mouseOver(mx, my, sideBarXREF, 0, 75, 75)) {
                         opedSideBar();
                         if (getDummy() != null) {
                             game.removeListenerForDummy(getDummy());
