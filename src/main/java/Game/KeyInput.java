@@ -3,6 +3,8 @@ package Game;
 import Game.HUD.Dummy;
 import Game.HUD.HUD;
 import Game.Map.Map;
+import Game.Map.MapStatus;
+import Game.Map.Wave.Spawner;
 import Game.Towers.Cannon;
 
 import java.awt.event.KeyAdapter;
@@ -26,46 +28,55 @@ public class KeyInput extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         System.out.println(key);
-        switch (key) {
-            //Left
-            case 39 -> {
-                if (Game.gameState == Game.STATE.GAME) {
-                    game.getHud().getSidebar().opedSideBar();
-                    if (game.getHud().getSidebar().getDummy() != null) {
-                        game.removeListenerForDummy(game.getHud().getSidebar().getDummy());
-                        game.getHud().getSidebar().setDummy(null);
+        if (Map.mapStatus == MapStatus.IN_PROGRESS) {
+            switch (key) {
+                //Left
+                case 39 -> {
+                    if (Game.gameState == Game.STATE.GAME) {
+                        game.getHud().getSidebar().opedSideBar();
+                        if (game.getHud().getSidebar().getDummy() != null) {
+                            game.removeListenerForDummy(game.getHud().getSidebar().getDummy());
+                            game.getHud().getSidebar().setDummy(null);
+                        }
                     }
                 }
-            }
-            //Right
-            case 37 -> {
-                if (Game.gameState == Game.STATE.GAME) {
-                    game.getHud().getSidebar().closeSideBar();
-                }
-            }
-            //C
-            case 67 -> {
-                if (Game.gameState == Game.STATE.GAME) {
-                    if (Map.COIN > Cannon.PRICE) {
-                        game.getHud().getSidebar().setDummy(new Dummy(handler, new Cannon(0, 0, handler)));
-                        game.addListenerForDummy(game.getHud().getSidebar().getDummy());
+                //Right
+                case 37 -> {
+                    if (Game.gameState == Game.STATE.GAME) {
                         game.getHud().getSidebar().closeSideBar();
-                        game.getHud().getUpgradeBar().closeUpgradeBar();
-                    } else {
-                        //Play sound effect
                     }
                 }
-            }
-            //ESC
-            case 27 -> {
-                if (Game.gameState == Game.STATE.PAUSE){
-                    Game.gameState = Game.STATE.GAME;
-                } else if (Game.gameState == Game.STATE.GAME){
-                    Game.gameState = Game.STATE.PAUSE;
+                //C
+                case 67 -> {
+                    if (Game.gameState == Game.STATE.GAME) {
+                        if (Map.COIN > Cannon.PRICE) {
+                            game.getHud().getSidebar().setDummy(new Dummy(handler, new Cannon(0, 0, handler)));
+                            game.addListenerForDummy(game.getHud().getSidebar().getDummy());
+                            game.getHud().getSidebar().closeSideBar();
+                            game.getHud().getUpgradeBar().closeUpgradeBar();
+                        } else {
+                            //Play sound effect
+                        }
+                    }
+                }
+                //ESC
+                case 27 -> {
+                    if (Game.gameState == Game.STATE.PAUSE) {
+                        Game.gameState = Game.STATE.GAME;
+                    } else if (Game.gameState == Game.STATE.GAME) {
+                        Game.gameState = Game.STATE.PAUSE;
+                    }
+                }
+                //Space and ENTER
+                case 32,10 -> {
+                    if (!Spawner.SPAWN && Game.gameState == Game.STATE.GAME) {
+                        Spawner.SPAWN = true;
+                    }
                 }
             }
         }
     }
+
     public boolean isEnabled() {
         return enabled;
     }
