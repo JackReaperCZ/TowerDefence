@@ -65,26 +65,28 @@ public abstract class Monster extends GameObject implements Cloneable {
     @Override
     public void render(Graphics g) {
         //Rotation
-        if (velX < 0 && !flipped){
+        if (velX < 0 && !flipped) {
             flipped = true;
         }
-        if (velX > 0 && flipped){
+        if (velX > 0 && flipped) {
             flipped = false;
         }
 
         //Draw
-        if (flipped){
-            g.drawImage(image, x + 76, y,-76,76,null);
+        if (flipped) {
+            g.drawImage(image, x + 76, y, -76, 76, null);
         } else {
             g.drawImage(image, x, y, null);
         }
     }
+
     //Load assets for the monster
     public void getAssets() {
         //Main png
         ImageIcon icon = new ImageIcon("src/main/data/monsters/" + this.name + "/" + this.name + ".png");
         this.image = icon.getImage();
     }
+
     //Creates a clone of the object
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
@@ -94,12 +96,14 @@ public abstract class Monster extends GameObject implements Cloneable {
     public void collision() {
         for (GameObject go : handler.objects) {
             if (go.getId() == ID.Projectile && getBounds().intersects(go.getBounds())) {
-                handler.removeGameObject(go);
-                Projectile p = (Projectile) go;
-                hp -= p.getDmg();
-                if (hp <= 0) {
-                    handler.removeGameObject(this);
-                    Map.COIN += this.gold;
+                if (!(handler.getToRemove().contains(go))) {
+                    handler.removeGameObject(go);
+                    Projectile p = (Projectile) go;
+                    hp -= p.getDmg();
+                    if (hp <= 0) {
+                        handler.removeGameObject(this);
+                        Map.COIN += this.gold;
+                    }
                 }
             }
         }

@@ -87,4 +87,8 @@ public class Handler {
     public Map getMap() {
         return map;
     }
+
+    public LinkedList<GameObject> getToRemove() {
+        return toRemove;
+    }
 }
