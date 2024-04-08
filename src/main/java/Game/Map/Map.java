@@ -91,9 +91,9 @@ public class Map {
                         y = f.getNextFlag().getY();
                 }
                 if (yi == 0){
-                        ar.add(new Rectangle2D.Double(x,y, Math.abs(xi) + 76,76));
+                        ar.add(new Rectangle2D.Double(x,y, Math.abs(xi) + 80,80));
                     } else {
-                        ar.add(new Rectangle2D.Double(x,y, 76,Math.abs(yi) + 76));
+                        ar.add(new Rectangle2D.Double(x,y, 80,Math.abs(yi) + 80));
                 }
             }
         }

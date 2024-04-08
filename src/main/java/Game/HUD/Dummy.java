@@ -53,7 +53,7 @@ public class Dummy extends MouseMotionAdapter {
     }
 
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(x, y, 76, 76);
+        return new Rectangle2D.Double(x-38, y-38, 76, 76);
     }
 
     @Override
