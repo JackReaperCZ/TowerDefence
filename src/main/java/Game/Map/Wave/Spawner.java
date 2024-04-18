@@ -3,9 +3,7 @@ package Game.Map.Wave;
 import Game.Game;
 import Game.Handler;
 import Game.Map.Path;
-import Game.Monsters.Monster;
-import Game.Monsters.Slime;
-import Game.Monsters.Type;
+import Game.Monsters.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -45,6 +43,9 @@ public class Spawner {
                         //Creating monster
                         switch (mosterName) {
                             case "slime" -> m = new Slime(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
+                            case "snake" -> m = new Snake(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
+                            case "spider" -> m = new Spider(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
+                            case "worm" -> m = new Worm(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
                         }
                         if (m != null) {
                             m.goTo(path.getFlag(1).getX(), path.getFlag(1).getY());

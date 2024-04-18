@@ -6,6 +6,8 @@ import Game.Map.Map;
 import Game.Map.MapStatus;
 import Game.Map.Wave.Spawner;
 import Game.Towers.Cannon;
+import Game.Towers.Mage;
+import Game.Towers.Ninja;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -55,7 +57,33 @@ public class KeyInput extends KeyAdapter {
                             game.getHud().getSidebar().closeSideBar();
                             game.getHud().getUpgradeBar().closeUpgradeBar();
                         } else {
-                            //Play sound effect
+                            AudioPlayer.getSound("nope").play();
+                        }
+                    }
+                }
+                //N
+                case 78 -> {
+                    if (Game.gameState == Game.STATE.GAME) {
+                        if (Map.COIN > Ninja.PRICE) {
+                            game.getHud().getSidebar().setDummy(new Dummy(handler, new Ninja(0, 0, handler)));
+                            game.addListenerForDummy(game.getHud().getSidebar().getDummy());
+                            game.getHud().getSidebar().closeSideBar();
+                            game.getHud().getUpgradeBar().closeUpgradeBar();
+                        } else {
+                            AudioPlayer.getSound("nope").play();
+                        }
+                    }
+                }
+                //M
+                case 77 -> {
+                    if (Game.gameState == Game.STATE.GAME) {
+                        if (Map.COIN > Mage.PRICE) {
+                            game.getHud().getSidebar().setDummy(new Dummy(handler, new Mage(0, 0, handler)));
+                            game.addListenerForDummy(game.getHud().getSidebar().getDummy());
+                            game.getHud().getSidebar().closeSideBar();
+                            game.getHud().getUpgradeBar().closeUpgradeBar();
+                        } else {
+                            AudioPlayer.getSound("nope").play();
                         }
                     }
                 }
@@ -68,7 +96,7 @@ public class KeyInput extends KeyAdapter {
                     }
                 }
                 //Space and ENTER
-                case 32,10 -> {
+                case 32, 10 -> {
                     if (!Spawner.SPAWN && Game.gameState == Game.STATE.GAME) {
                         Spawner.SPAWN = true;
                     }
