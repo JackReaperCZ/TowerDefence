@@ -5,6 +5,9 @@ import Game.Handler;
 import Game.Map.Map;
 import Game.Map.MapStatus;
 import Game.Towers.Cannon;
+import Game.Towers.Mage;
+import Game.Towers.Ninja;
+import Game.AudioPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +20,8 @@ public class Sidebar extends UI {
     private Handler handler;
     private Image coin;
     private Image cannon;
+    private Image ninja;
+    private Image mage;
     private Game game;
     private Dummy dummy;
 
@@ -27,6 +32,10 @@ public class Sidebar extends UI {
         this.coin = iconC.getImage();
         ImageIcon icon = new ImageIcon("src/main/data/towers/cannon/cannon.png");
         this.cannon = icon.getImage();
+        icon = new ImageIcon("src/main/data/towers/ninja/ninja.png");
+        this.ninja = icon.getImage();
+        icon = new ImageIcon("src/main/data/towers/mage/mage.png");
+        this.mage = icon.getImage();
     }
 
     @Override
@@ -54,7 +63,7 @@ public class Sidebar extends UI {
     public void render(Graphics g) {
         //Sidebar open button
         g.setColor(new Color(150, 105, 25));
-        g.fillRect(sideBarXREF + 0, 0, 65, 75);
+        g.fillRect(sideBarXREF, 0, 65, 75);
         g.fillRect(sideBarXREF + 55, 10, 20, 55);
         g.fillArc(sideBarXREF + 55, 0, 20, 20, 0, 90);
         g.fillArc(sideBarXREF + 55, 55, 20, 20, 0, -90);
@@ -88,6 +97,28 @@ public class Sidebar extends UI {
         g.drawImage(coin, sideBarXREF - 137, 100, 36, 36, null);
         g.drawString(Cannon.PRICE + "", sideBarXREF - 100, 127);
 
+        //Ninja
+        g.setColor(new Color(196, 164, 132));
+        g.fillRoundRect(sideBarXREF - 145, 155, 140, 140, 20, 20);
+        g.drawImage(ninja, sideBarXREF - 140, 160, 130, 130, null);
+
+        g.setColor(Color.WHITE);
+        g.setFont(fontS);
+        g.drawString("N", sideBarXREF - 30, 180);
+        g.drawImage(coin, sideBarXREF - 137, 250, 36, 36, null);
+        g.drawString(Ninja.PRICE + "", sideBarXREF - 100, 277);
+
+        //Mage
+        g.setColor(new Color(196, 164, 132));
+        g.fillRoundRect(sideBarXREF - 145, 305, 140, 140, 20, 20);
+        g.drawImage(mage, sideBarXREF - 140, 310, 130, 130, null);
+
+        g.setColor(Color.WHITE);
+        g.setFont(fontS);
+        g.drawString("M", sideBarXREF - 30, 330);
+        g.drawImage(coin, sideBarXREF - 137, 400, 36, 36, null);
+        g.drawString(Mage.PRICE + "", sideBarXREF - 100, 427);
+
         if (this.dummy != null) {
             this.dummy.render(g);
         }
@@ -109,7 +140,25 @@ public class Sidebar extends UI {
                             game.addListenerForDummy(getDummy());
                             closeSideBar();
                         } else {
-                            //Play sound effect
+                            AudioPlayer.getSound("nope").play();
+                        }
+                    }
+                    if (mouseOver(mx, my, sideBarXREF - 145, 155, 140, 140)) {
+                        if (Map.COIN >= Ninja.PRICE) {
+                            setDummy(new Dummy(handler, new Ninja(0, 0, handler)));
+                            game.addListenerForDummy(getDummy());
+                            closeSideBar();
+                        } else {
+                            AudioPlayer.getSound("nope").play();
+                        }
+                    }
+                    if (mouseOver(mx, my, sideBarXREF - 145, 305, 140, 140)) {
+                        if (Map.COIN >= Mage.PRICE) {
+                            setDummy(new Dummy(handler, new Mage(0, 0, handler)));
+                            game.addListenerForDummy(getDummy());
+                            closeSideBar();
+                        } else {
+                            AudioPlayer.getSound("nope").play();
                         }
                     }
                 } else {
@@ -123,14 +172,27 @@ public class Sidebar extends UI {
                 }
                 if (getDummy() != null) {
                     if (getDummy().place()) {
-                        if (getDummy().getTower() instanceof Cannon) {
-                            handler.addGameObject(new Cannon(getDummy().getX() - 38, getDummy().getY() - 38, handler));
+                        switch (getDummy().getTower().getTowerName()) {
+                            case "cannon" -> {
+                                handler.addGameObject(new Cannon(getDummy().getX() - 38, getDummy().getY() - 38, handler));
+                                Map.COIN -= Cannon.PRICE;
+                            }
+                            case "ninja" -> {
+                                handler.addGameObject(new Ninja(getDummy().getX() - 38, getDummy().getY() - 38, handler));
+                                Map.COIN -= Ninja.PRICE;
+                            }
+                            case "mage" -> {
+                                handler.addGameObject(new Mage(getDummy().getX() - 38, getDummy().getY() - 38, handler));
+                                Map.COIN -= Mage.PRICE;
+                            }
                         }
-                        Map.COIN -= Cannon.PRICE;
+                        AudioPlayer.getSound("place").play();
                         game.removeListenerForDummy(getDummy());
                         setDummy(null);
                     } else {
-                        //Play sound effect
+                        if (!(mouseOver(mx, my, 0, 0, 150, 500)) && (sideBarOpened)) {
+                            AudioPlayer.getSound("nope").play();
+                        }
                     }
                 }
             }

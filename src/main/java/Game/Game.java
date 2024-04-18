@@ -46,6 +46,10 @@ public class Game extends Canvas implements Runnable {
         this.menu = new Menu(handler);
         //Initialization of the KeyInput
         this.keyInput = new KeyInput(handler, this);
+
+        //Audio
+        AudioPlayer.load();
+
         //KeyInput
         this.addKeyListener(keyInput);
 

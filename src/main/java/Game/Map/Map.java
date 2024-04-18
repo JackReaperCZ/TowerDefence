@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import Game.AudioPlayer;
 import Game.GameObject;
 import Game.Handler;
 import Game.ID;
@@ -51,6 +52,7 @@ public class Map {
             }
             if (!monsterOnMap){
                 Map.mapStatus = MapStatus.WON;
+                AudioPlayer.getSound("gameWon").play();
             }
         }
     }
@@ -67,6 +69,7 @@ public class Map {
             //Check if we didn't lose
             if (HEALTH <= 0 && mapStatus != MapStatus.LOST){
                 mapStatus = MapStatus.LOST;
+                AudioPlayer.getSound("gameOver").play();
             }
         } else {
             monster.goTo(path.getFlags().get(i+1).getX(),path.getFlags().get(i+1).getY());

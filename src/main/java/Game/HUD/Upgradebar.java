@@ -182,7 +182,7 @@ public class Upgradebar extends UI {
                                 selectedTower.upgrade(i);
                             }
                         } else {
-                            //Play sound effect
+                            AudioPlayer.getSound("nope").play();
                         }
                     }
                 }
@@ -196,11 +196,13 @@ public class Upgradebar extends UI {
                     int cost = selectedTower.getPrice();
                     for (Integer y : selectedTower.getUpgrades()) {
                         if (y != null) {
+                            System.out.println(y);
                             cost += y * 100;
                         }
                     }
                     Map.COIN += cost;
                     closeUpgradeBar();
+                    AudioPlayer.getSound("sell").play();
                     handler.removeGameObject(selectedTower);
                 }
             }
