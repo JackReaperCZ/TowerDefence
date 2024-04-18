@@ -26,10 +26,8 @@ public class Dummy extends MouseMotionAdapter {
         this.tower = tower;
         this.handler = handler;
         this.radius = tower.getRadius();
-        if (tower instanceof Cannon) {
-            ImageIcon icon = new ImageIcon("src/main/data/towers/cannon/cannon.png");
-            this.image = icon.getImage();
-        }
+        ImageIcon icon = new ImageIcon("src/main/data/towers/"+tower.getTowerName()+"/"+tower.getTowerName()+".png");
+        this.image = icon.getImage();
     }
 
     public void render(Graphics g) {

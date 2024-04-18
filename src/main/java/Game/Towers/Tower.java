@@ -258,4 +258,8 @@ public abstract class Tower extends GameObject {
     public int getPrice(){
         return price;
     }
+
+    public String getTowerName() {
+        return towerName;
+    }
 }

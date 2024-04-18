@@ -1,5 +1,6 @@
 package Game.Towers;
 
+import Game.AudioPlayer;
 import Game.Handler;
 import Game.Map.Map;
 import Game.Map.MapStatus;
@@ -23,6 +24,7 @@ public class Cannon extends Tower {
         if (Map.mapStatus == MapStatus.IN_PROGRESS) {
             angle = calculateAngle(xTarget, yTarget);
             handler.addGameObject(new Cannonball(x + 19, y + 19, xTarget + 19, yTarget + 19, dmg, handler));
+            AudioPlayer.getSound("cannon").play();
             projectileCooldown = coolDownFlag;
         }
     }

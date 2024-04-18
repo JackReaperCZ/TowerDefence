@@ -59,4 +59,8 @@ public abstract class Projectile extends GameObject {
     public int getDmg() {
         return dmg;
     }
+
+    public DamageType getDamageType() {
+        return damageType;
+    }
 }

@@ -4,6 +4,7 @@ import Game.GameObject;
 import Game.Handler;
 import Game.ID;
 import Game.Map.Map;
+import Game.Towers.Projectile.DamageType;
 import Game.Towers.Projectile.Projectile;
 
 import javax.swing.*;
@@ -99,7 +100,19 @@ public abstract class Monster extends GameObject implements Cloneable {
                 if (!(handler.getToRemove().contains(go))) {
                     handler.removeGameObject(go);
                     Projectile p = (Projectile) go;
-                    hp -= p.getDmg();
+                    switch (type){
+                        case NORMAL -> {
+                            hp -= p.getDmg();
+                        }
+                        case ARMORED -> {
+                            hp -= (int) (p.getDmg()/2);
+                        }
+                        case MAGICRESISTANT -> {
+                            if (p.getDamageType() != DamageType.MAGICAL){
+                                hp -= p.getDmg();
+                            }
+                        }
+                    }
                     if (hp <= 0) {
                         handler.removeGameObject(this);
                         Map.COIN += this.gold;
