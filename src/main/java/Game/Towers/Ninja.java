@@ -6,8 +6,22 @@ import Game.Map.Map;
 import Game.Map.MapStatus;
 import Game.Towers.Projectile.Shuriken;
 
+/**
+ * Represents a Ninja tower in the game.
+ */
 public class Ninja extends Tower {
+    /**
+     * The price of the Ninja tower.
+     */
     public static int PRICE = 450;
+
+    /**
+     * Constructs a Ninja tower with the specified coordinates and handler.
+     *
+     * @param x       The x-coordinate of the Ninja tower.
+     * @param y       The y-coordinate of the Ninja tower.
+     * @param handler The handler managing the Ninja tower.
+     */
     public Ninja(int x, int y, Handler handler) {
         super(x, y, handler);
         this.towerName = "ninja";
@@ -19,6 +33,12 @@ public class Ninja extends Tower {
         getTowerAssets();
     }
 
+    /**
+     * Shoots a shuriken projectile from the Ninja tower towards the target.
+     *
+     * @param xTarget The x-coordinate of the target.
+     * @param yTarget The y-coordinate of the target.
+     */
     @Override
     public void shoot(int xTarget, int yTarget) {
         if (Map.mapStatus == MapStatus.IN_PROGRESS) {

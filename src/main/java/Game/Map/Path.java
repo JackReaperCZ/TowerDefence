@@ -7,20 +7,31 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+/**
+ * The Path class represents the path that monsters follow on the game map.
+ * It loads flags from a file and builds the path by connecting these flags.
+ */
 public class Path {
-    //Source path of the map folder
+    // Source path of the map folder
     private String sourcePath;
-    //Arraylist of flags
+    // ArrayList of flags
     private ArrayList<Flag> flags = new ArrayList<>();
 
-    //Constructor
+    /**
+     * Constructs a Path object with the specified source path.
+     *
+     * @param sourcePath The source path of the map folder.
+     */
     public Path(String sourcePath) {
         this.sourcePath = sourcePath;
         loadFlags();
         buildPath();
     }
 
-    //Loading data from path.txt
+    /**
+     * Loads flag data from the "path.txt" file.
+     * Each line in the file represents a flag's position on the map.
+     */
     public void loadFlags() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(sourcePath + "path.txt"));
@@ -36,11 +47,11 @@ public class Path {
                         default -> valuesI[i] = Integer.valueOf(valuesS[i]);
                     }
                 }
-                flags.add(new Flag(valuesI[0],valuesI[1]));
+                flags.add(new Flag(valuesI[0], valuesI[1]));
                 line = br.readLine();
             }
 
-        } catch (FileNotFoundException fnfe){
+        } catch (FileNotFoundException fnfe) {
             System.out.println("File path.txt not found.");
         } catch (NumberFormatException nfe) {
             System.out.println("Unexpected value.");
@@ -49,16 +60,30 @@ public class Path {
         }
     }
 
-    //Method that connects all flags
+    /**
+     * Builds the path by connecting all flags.
+     */
     public void buildPath() {
         for (int i = 0; i < flags.size() - 1; i++) {
             flags.get(i).setNextFlag(flags.get(i + 1));
         }
     }
-    //Getters and setters
+
+    /**
+     * Gets the flag at the specified index.
+     *
+     * @param i The index of the flag.
+     * @return The flag at the specified index.
+     */
     public Flag getFlag(int i) {
         return flags.get(i);
     }
+
+    /**
+     * Gets the list of flags representing the path.
+     *
+     * @return The list of flags representing the path.
+     */
     public ArrayList<Flag> getFlags() {
         return flags;
     }

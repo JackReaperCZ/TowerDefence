@@ -13,6 +13,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
+/**
+ * The Sidebar class represents the user interface sidebar in the game.
+ * It provides options for purchasing and placing towers.
+ */
 public class Sidebar extends UI {
     private boolean sideBarOpened = false;
     private int sideBarXREF = 0;
@@ -25,6 +29,12 @@ public class Sidebar extends UI {
     private Game game;
     private Dummy dummy;
 
+    /**
+     * Constructs a Sidebar object with the specified handler and game.
+     *
+     * @param handler The handler for game objects.
+     * @param game    The game instance.
+     */
     public Sidebar(Handler handler, Game game) {
         this.handler = handler;
         this.game = game;
@@ -38,6 +48,9 @@ public class Sidebar extends UI {
         this.mage = icon.getImage();
     }
 
+    /**
+     * Updates the sidebar.
+     */
     @Override
     public void tick() {
         if (sideBarOpened) {
@@ -51,14 +64,25 @@ public class Sidebar extends UI {
         }
     }
 
+    /**
+     * Opens the sidebar.
+     */
     public void opedSideBar() {
         this.sideBarOpened = true;
     }
 
+    /**
+     * Closes the sidebar.
+     */
     public void closeSideBar() {
         this.sideBarOpened = false;
     }
 
+    /**
+     * Renders the sidebar.
+     *
+     * @param g The Graphics context to render on.
+     */
     @Override
     public void render(Graphics g) {
         //Sidebar open button
@@ -124,6 +148,11 @@ public class Sidebar extends UI {
         }
     }
 
+    /**
+     * Handles mouse press events.
+     *
+     * @param e The MouseEvent object.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
@@ -199,10 +228,20 @@ public class Sidebar extends UI {
         }
     }
 
+    /**
+     * Retrieves the dummy object.
+     *
+     * @return The dummy object.
+     */
     public Dummy getDummy() {
         return dummy;
     }
 
+    /**
+     * Sets the dummy object.
+     *
+     * @param dummy The dummy object to set.
+     */
     public void setDummy(Dummy dummy) {
         this.dummy = dummy;
     }

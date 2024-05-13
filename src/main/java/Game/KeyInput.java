@@ -12,20 +12,29 @@ import Game.Towers.Ninja;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-//KeyInput class to handle user input
+/**
+ * Handles user keyboard input.
+ */
 public class KeyInput extends KeyAdapter {
     private Handler handler;
     private Game game;
-    private boolean enabled;
 
-    //Constructor
+    /**
+     * Constructs a KeyInput object.
+     *
+     * @param handler The handler for the game.
+     * @param game    The game instance.
+     */
     public KeyInput(Handler handler, Game game) {
         this.handler = handler;
         this.game = game;
-        this.enabled = true;
     }
 
-    //Method to get pressed key
+    /**
+     * Responds to key press events.
+     *
+     * @param e The KeyEvent representing the key press event.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -103,13 +112,5 @@ public class KeyInput extends KeyAdapter {
                 }
             }
         }
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 }

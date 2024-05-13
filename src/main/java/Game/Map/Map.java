@@ -13,10 +13,13 @@ import Game.Monsters.Monster;
 
 import javax.swing.*;
 
+/**
+ * The Map class represents the game map, including the background image, path, and spawner for monsters.
+ */
 public class Map {
     //Gold variable
-    public static int COIN = 10000;
-    //Gold variable
+    public static int COIN = 500;
+    //Health variable
     public static int HEALTH = 100;
     //Path
     private Path path;
@@ -29,89 +32,135 @@ public class Map {
     //Actual map status
     public static MapStatus mapStatus = MapStatus.IN_PROGRESS;
     private String sourcePath;
+    private String mapName;
 
-    //Constructor
-    public Map(Handler handler,String sourcePath) {
+
+    /**
+     * Constructs a new Map object.
+     *
+     * @param handler    the handler for managing game objects
+     * @param sourcePath the path to the map resources
+     * @param mapName    the name of the map
+     */
+    public Map(Handler handler, String sourcePath, String mapName) {
+        AudioPlayer.getMusic(mapName).loop();
         this.sourcePath = sourcePath;
         ImageIcon icon = new ImageIcon(sourcePath + "map.png");
         this.image = icon.getImage();
         this.path = new Path(sourcePath);
         this.handler = handler;
-        this.spawner = new Spawner(this.path,handler,sourcePath);
+        this.spawner = new Spawner(this.path, handler, sourcePath);
+        this.mapName = mapName;
     }
-    //Tick method
-    public void tick(){
+
+    /**
+     * Updates the state of the map.
+     */
+    public void tick() {
         spawner.tick();
-        if ((Spawner.ACTUAL_WAVE == this.handler.getMap().getSpawner().getWaves().size()) && !Spawner.SPAWN){
+        if ((Spawner.ACTUAL_WAVE == this.handler.getMap().getSpawner().getWaves().size()) && !Spawner.SPAWN) {
             boolean monsterOnMap = false;
-            for (GameObject go : this.handler.objects){
-                if (go.getId() == ID.Monster){
+            for (GameObject go : this.handler.objects) {
+                if (go.getId() == ID.Monster) {
                     monsterOnMap = true;
                     break;
                 }
             }
-            if (!monsterOnMap){
+            if (!monsterOnMap && Map.mapStatus != MapStatus.WON) {
                 Map.mapStatus = MapStatus.WON;
-                AudioPlayer.getSound("gameWon").play();
+                AudioPlayer.getSound("gameWin").play();
             }
         }
     }
 
-    //Rendering of the map
+    /**
+     * Renders the map.
+     *
+     * @param g the graphics context
+     */
     public void render(Graphics g) {
-        g.drawImage(image,0,0,null);
+        g.drawImage(image, 0, 0, null);
     }
-    //Sends the monster object to the next flag
-    public void nextFlag(int i, Monster monster){
-        if (i == path.getFlags().size()-1){
+
+    /**
+     * Moves the monster object to the next flag on the path.
+     *
+     * @param i       the index of the next flag
+     * @param monster the monster object to move
+     */
+    public void nextFlag(int i, Monster monster) {
+        if (i == path.getFlags().size() - 1) {
             Map.HEALTH -= monster.getDmg();
             handler.removeGameObject(monster);
             //Check if we didn't lose
-            if (HEALTH <= 0 && mapStatus != MapStatus.LOST){
+            if (HEALTH <= 0 && mapStatus != MapStatus.LOST) {
                 mapStatus = MapStatus.LOST;
                 AudioPlayer.getSound("gameOver").play();
             }
         } else {
-            monster.goTo(path.getFlags().get(i+1).getX(),path.getFlags().get(i+1).getY());
+            monster.goTo(path.getFlags().get(i + 1).getX(), path.getFlags().get(i + 1).getY());
         }
     }
-    //Hitbox of the path
-    public ArrayList<Rectangle2D> getBounds(){
+
+    /**
+     * Gets the hitboxes of the path.
+     *
+     * @return an array list of rectangle hitboxes representing the path segments
+     */
+    public ArrayList<Rectangle2D> getBounds() {
         ArrayList<Rectangle2D> ar = new ArrayList<>();
-        for (Flag f : path.getFlags()){
-            if (f.getNextFlag()!= null){
+        for (Flag f : path.getFlags()) {
+            if (f.getNextFlag() != null) {
 
                 int xi = f.getX() - f.getNextFlag().getX();
                 int yi = f.getY() - f.getNextFlag().getY();
 
                 int x = 0;
                 int y = 0;
-                if (xi < 0 || yi < 0){
-                        x = f.getX();
-                        y = f.getY();
+                if (xi < 0 || yi < 0) {
+                    x = f.getX();
+                    y = f.getY();
                 } else {
-                        x = f.getNextFlag().getX();
-                        y = f.getNextFlag().getY();
+                    x = f.getNextFlag().getX();
+                    y = f.getNextFlag().getY();
                 }
-                if (yi == 0){
-                        ar.add(new Rectangle2D.Double(x,y, Math.abs(xi) + 80,80));
-                    } else {
-                        ar.add(new Rectangle2D.Double(x,y, 80,Math.abs(yi) + 80));
+                if (yi == 0) {
+                    ar.add(new Rectangle2D.Double(x, y, Math.abs(xi) + 80, 80));
+                } else {
+                    ar.add(new Rectangle2D.Double(x, y, 80, Math.abs(yi) + 80));
                 }
             }
         }
         return ar;
     }
     //Getters and setters
+
+    /**
+     * Gets the spawner for monsters on this map.
+     *
+     * @return the spawner object
+     */
     public Spawner getSpawner() {
         return spawner;
     }
 
-    public void setSpawner(Spawner spawner) {
-        this.spawner = spawner;
-    }
+    /**
+     * Gets the source path of the map resources.
+     *
+     * @return the source path
+     */
 
     public String getSourcePath() {
         return sourcePath;
+    }
+
+    /**
+     * Gets the name of the map.
+     *
+     * @return the map name
+     */
+
+    public String getMapName() {
+        return mapName;
     }
 }

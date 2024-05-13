@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+/**
+ * The Spawner class manages the spawning of waves of monsters on the map.
+ */
 public class Spawner {
     //Arraylist of waves in this map
     private final ArrayList<Wave> waves = new ArrayList<>();
@@ -21,6 +24,13 @@ public class Spawner {
     //Control variable for switching spawning of monsters
     public static boolean SPAWN = false;
 
+    /**
+     * Constructs a Spawner object and initializes it with waves based on data from the waves.txt file.
+     *
+     * @param path       The path for the monsters to follow.
+     * @param handler    The handler to manage game objects.
+     * @param sourcePath The source path of the map folder.
+     */
     public Spawner(Path path, Handler handler, String sourcePath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(sourcePath + "/waves.txt"));
@@ -42,9 +52,12 @@ public class Spawner {
 
                         //Creating monster
                         switch (mosterName) {
-                            case "slime" -> m = new Slime(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
-                            case "snake" -> m = new Snake(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
-                            case "spider" -> m = new Spider(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
+                            case "slime" ->
+                                    m = new Slime(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
+                            case "snake" ->
+                                    m = new Snake(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
+                            case "spider" ->
+                                    m = new Spider(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
                             case "worm" -> m = new Worm(path.getFlag(0).getX(), path.getFlag(0).getY(), type, handler);
                         }
                         if (m != null) {
@@ -65,7 +78,10 @@ public class Spawner {
             e.printStackTrace();
         }
     }
-    //Tick method
+
+    /**
+     * Updates the spawner and progresses the wave.
+     */
     public void tick() {
         if (SPAWN && Game.gameState == Game.STATE.GAME) {
             if (WAVE_COUNTER == 120) {
@@ -88,7 +104,11 @@ public class Spawner {
         }
     }
 
-    //Getters and setters
+    /**
+     * Retrieves the list of waves.
+     *
+     * @return The list of waves.
+     */
     public ArrayList<Wave> getWaves() {
         return waves;
     }

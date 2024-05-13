@@ -12,7 +12,9 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
-//Monster class
+/**
+ * Represents a monster in the game.
+ */
 public abstract class Monster extends GameObject implements Cloneable {
     //Type of the monster
     protected Type type;
@@ -41,7 +43,14 @@ public abstract class Monster extends GameObject implements Cloneable {
     //Control variable to see if the image should render flipped
     protected boolean flipped = false;
 
-    //Constructor
+    /**
+     * Constructs a new Monster object.
+     *
+     * @param x       The initial x-coordinate of the monster.
+     * @param y       The initial y-coordinate of the monster.
+     * @param type    The type of the monster.
+     * @param handler The game handler managing the monster.
+     */
     public Monster(int x, int y, Type type, Handler handler) {
         super(x, y);
         this.type = type;
@@ -49,7 +58,9 @@ public abstract class Monster extends GameObject implements Cloneable {
         this.handler = handler;
     }
 
-    //Tick method
+    /**
+     * Updates the state of the monster.
+     */
     @Override
     public void tick() {
         collision();
@@ -62,7 +73,11 @@ public abstract class Monster extends GameObject implements Cloneable {
         y += velY;
     }
 
-    //Rendering of the object
+    /**
+     * Renders the monster.
+     *
+     * @param g The graphics object used for rendering.
+     */
     @Override
     public void render(Graphics g) {
         //Rotation
@@ -81,34 +96,43 @@ public abstract class Monster extends GameObject implements Cloneable {
         }
     }
 
-    //Load assets for the monster
+    /**
+     * Loads assets for the monster.
+     */
     public void getAssets() {
         //Main png
         ImageIcon icon = new ImageIcon("src/main/data/monsters/" + this.name + "/" + this.name + ".png");
         this.image = icon.getImage();
     }
 
-    //Creates a clone of the object
+    /**
+     * Creates a clone of the monster object.
+     *
+     * @return A clone of the monster.
+     * @throws CloneNotSupportedException If cloning is not supported.
+     */
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
-    //Method to handle collision with projectiles
+    /**
+     * Handles collision with projectiles.
+     */
     public void collision() {
         for (GameObject go : handler.objects) {
             if (go.getId() == ID.Projectile && getBounds().intersects(go.getBounds())) {
                 if (!(handler.getToRemove().contains(go))) {
                     handler.removeGameObject(go);
                     Projectile p = (Projectile) go;
-                    switch (type){
+                    switch (type) {
                         case NORMAL -> {
                             hp -= p.getDmg();
                         }
                         case ARMORED -> {
-                            hp -= (int) (p.getDmg()/2);
+                            hp -= (int) (p.getDmg() / 2);
                         }
                         case MAGICRESISTANT -> {
-                            if (p.getDamageType() != DamageType.MAGICAL){
+                            if (p.getDamageType() != DamageType.MAGICAL) {
                                 hp -= p.getDmg();
                             }
                         }
@@ -122,7 +146,12 @@ public abstract class Monster extends GameObject implements Cloneable {
         }
     }
 
-    //Method that will tell monster where to go
+    /**
+     * Sets the destination coordinates for the monster to move towards.
+     *
+     * @param x The x-coordinate of the destination.
+     * @param y The y-coordinate of the destination.
+     */
     public void goTo(int x, int y) {
         this.xToGo = x;
         this.yToGo = y;
@@ -144,11 +173,16 @@ public abstract class Monster extends GameObject implements Cloneable {
         }
     }
 
-    //Getting hitbox of the monster
     @Override
     public Ellipse2D getIntersects() {
         return null;
     }
+
+    /**
+     * Gets the bounding rectangle of the monster.
+     *
+     * @return The bounding rectangle.
+     */
 
     @Override
     public Rectangle2D getBounds() {
@@ -156,14 +190,6 @@ public abstract class Monster extends GameObject implements Cloneable {
     }
 
     //Getters and setters
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public int getDmg() {
         return dmg;
     }
@@ -176,23 +202,9 @@ public abstract class Monster extends GameObject implements Cloneable {
         return hp;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getGold() {
-        return gold;
-    }
-
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
 
     public int getProgression() {
         return progression;
     }
 
-    public void setProgression(int progression) {
-        this.progression = progression;
-    }
 }

@@ -5,29 +5,59 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
-//Abstract class of game object
+/**
+ * An abstract class representing a game object.
+ */
 public abstract class GameObject {
     //Base variables
-    protected int x,y;
+    protected int x, y;
     protected ID id;
     protected int velX, velY;
     protected Integer identification;
-    //Constructor
+
+    /**
+     * Constructs a GameObject with the specified coordinates.
+     *
+     * @param x The x-coordinate of the game object.
+     * @param y The y-coordinate of the game object.
+     */
     public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    //Tick
+
+    /**
+     * Updates the state of the game object.
+     */
     public abstract void tick();
-    //Render
+
+    /**
+     * Renders the game object.
+     *
+     * @param g The Graphics object to render the game object.
+     */
     public abstract void render(Graphics g);
-    //Collisions
-    //For round objects
+
+    /**
+     * Returns the shape representing the collision area for round objects.
+     *
+     * @return The Ellipse2D shape representing the collision area.
+     */
     public abstract Ellipse2D getIntersects();
-    //For rectangle objects
+
+    /**
+     * Returns the shape representing the collision area for rectangle objects.
+     *
+     * @return The Rectangle2D shape representing the collision area.
+     */
     public abstract Rectangle2D getBounds();
 
-    //equals and hashCode
+    /**
+     * Checks if this game object is equal to another object.
+     *
+     * @param o The object to compare with.
+     * @return true if the objects are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,6 +65,12 @@ public abstract class GameObject {
         GameObject that = (GameObject) o;
         return Objects.equals(identification, that.identification);
     }
+
+    /**
+     * Generates a hash code for this game object.
+     *
+     * @return The hash code value for this game object.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(identification);

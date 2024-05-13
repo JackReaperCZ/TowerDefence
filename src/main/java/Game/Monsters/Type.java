@@ -1,5 +1,7 @@
 package Game.Monsters;
-//Enum for special types of monsters
+/**
+ * Enumerates the special types of monsters in the game.
+ */
 public enum Type {
     NORMAL,
     ARMORED,

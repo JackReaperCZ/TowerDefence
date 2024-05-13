@@ -6,42 +6,85 @@ import Game.HUD.HUD;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
+/**
+ * The main class that controls the game flow.
+ * Responsible for initialization, game loop execution, rendering, and input handling.
+ */
 public class Game extends Canvas implements Runnable {
-    //Static parameters for main window
-    public static final int WIDTH = 1080, HEIGHT = WIDTH / 12 * 9;
+    /**
+     * The width of the game window.
+     */
+    public static final int WIDTH = 1080;
 
-    //Declaration of main thread
+    /**
+     * The height of the game window.
+     */
+    public static final int HEIGHT = WIDTH / 12 * 9;
+
+    /**
+     * The main thread responsible for running the game loop.
+     */
     private Thread thread;
-    //Control variable for stopping and starting the game
+
+    /**
+     * Flag indicating whether the game is running.
+     */
     private boolean running = false;
 
-    //Enum for game state
+    /**
+     * The current state of the game.
+     */
     public enum STATE {
         MENU,
         GAME,
         PAUSE
     }
 
+    /**
+     * The current state of the game.
+     */
     public static STATE gameState = STATE.MENU;
 
-    //Declaration of handler of game objects
+    /**
+     * The handler responsible for managing game objects.
+     */
     private Handler handler;
-    //Declaration of HUD object
+
+    /**
+     * The heads-up display (HUD) showing game information.
+     */
     private HUD hud;
-    //Declaration of Game.Menu object
+
+    /**
+     * The menu displayed during the game.
+     */
     private Menu menu;
+
+    /**
+     * The key input handler for the game.
+     */
     private KeyInput keyInput;
+
+    /**
+     * Main method to start the game.
+     *
+     * @param args Command-line arguments (not used).
+     */
 
     //Main method
     public static void main(String[] args) {
         new Game();
     }
 
+    /**
+     * Constructs a new instance of the Game class.
+     * Initializes game components, sets up input listeners, and creates the game window.
+     */
     public Game() {
         //Initialization of the handler
         this.handler = new Handler();
         //Initialization of the HUD
-        this.hud = new HUD(handler,this);
+        this.hud = new HUD(handler, this);
         //Initialization of the Game.Menu
         this.menu = new Menu(handler);
         //Initialization of the KeyInput
@@ -63,16 +106,22 @@ public class Game extends Canvas implements Runnable {
         this.addMouseListener(hud.getPauseMenu());
         //Creating a main window
         new Window(WIDTH, HEIGHT, "Tower Defence", this);
+
+        AudioPlayer.musicMap.get("menu").loop();
     }
 
-    //Method to initialize and start the thread
+    /**
+     * Starts the game loop by initializing and starting the thread.
+     */
     public synchronized void start() {
         thread = new Thread(this);
         thread.start();
         running = true;
     }
 
-    //Method to stop the thread
+    /**
+     * Stops the game loop by stopping the thread.
+     */
     public synchronized void stop() {
         try {
             thread.join();
@@ -82,7 +131,11 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
-    //Main game loop
+
+    /**
+     * The main game loop that runs continuously until the game is stopped.
+     * Responsible for updating game logic and rendering.
+     */
     @Override
     public void run() {
         this.requestFocus();
@@ -91,8 +144,6 @@ public class Game extends Canvas implements Runnable {
         double amountOfTicks = 120.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        //long timer = System.currentTimeMillis();
-        //int frames = 0;
         while (running) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
@@ -103,18 +154,15 @@ public class Game extends Canvas implements Runnable {
             }
             if (running) {
                 render();
-                /*frames++;
-                if (System.currentTimeMillis() - timer > 1000){
-                    timer += 1000;
-                    System.out.println("FPS: " + frames);
-                    frames = 0;
-                }*/
             }
         }
         stop();
     }
 
-    //Method to tell handled to tick all game objects
+    /**
+     * Updates game logic for each frame.
+     * Called within the game loop.
+     */
     private void tick() {
         if (gameState == STATE.GAME) {
             handler.tick();
@@ -122,7 +170,10 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
-    //Method to tell handled to render all game objects
+    /**
+     * Renders game objects and HUD components.
+     * Called within the game loop.
+     */
     private void render() {
         //Triple buffering
         BufferStrategy bs = this.getBufferStrategy();
@@ -144,14 +195,30 @@ public class Game extends Canvas implements Runnable {
         bs.show();
     }
 
+    /**
+     * Retrieves the HUD of the game.
+     *
+     * @return The HUD object.
+     */
     public HUD getHud() {
         return hud;
     }
 
-    public void addListenerForDummy(Dummy dummy){
+    /**
+     * Adds a mouse motion listener for a Dummy object in the HUD.
+     *
+     * @param dummy The Dummy object to add the listener to.
+     */
+    public void addListenerForDummy(Dummy dummy) {
         this.addMouseMotionListener(dummy);
     }
-    public void removeListenerForDummy(Dummy dummy){
+
+    /**
+     * Removes a mouse motion listener from a Dummy object in the HUD.
+     *
+     * @param dummy The Dummy object to remove the listener from.
+     */
+    public void removeListenerForDummy(Dummy dummy) {
         this.removeMouseMotionListener(dummy);
     }
 }

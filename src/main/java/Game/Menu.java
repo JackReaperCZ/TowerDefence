@@ -8,6 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
 
+/**
+ * Represents the menu interface of the game.
+ */
 public class Menu extends MouseAdapter {
     private Image background;
     private Font fontB;
@@ -15,6 +18,7 @@ public class Menu extends MouseAdapter {
     private Handler handler;
     private File[] maps;
 
+    // Represents the currently opened menu state
     private enum MENU {
         MAIN,
         MAP_SELECT
@@ -22,6 +26,11 @@ public class Menu extends MouseAdapter {
 
     private MENU openedMenu = MENU.MAIN;
 
+    /**
+     * Constructs a Menu object.
+     *
+     * @param handler The handler for the game.
+     */
     public Menu(Handler handler) {
         this.handler = handler;
         this.maps = getActiveMaps();
@@ -41,7 +50,11 @@ public class Menu extends MouseAdapter {
         }
     }
 
-    //Render method
+    /**
+     * Renders the menu interface.
+     *
+     * @param g The Graphics object to render the menu.
+     */
     public void render(Graphics g) {
         g.drawImage(background, 0, 0, null);
         switch (openedMenu) {
@@ -105,7 +118,11 @@ public class Menu extends MouseAdapter {
         return false;
     }
 
-    //Gets all maps from map directory
+    /**
+     * Retrieves active maps from the map directory.
+     *
+     * @return An array of active maps.
+     */
     private File[] getActiveMaps() {
         try {
             File directory = new File("src/main/data/maps");
@@ -123,7 +140,11 @@ public class Menu extends MouseAdapter {
         return null;
     }
 
-    //Catch and react to mouse pressed event
+    /**
+     * Handles mouse pressed events.
+     *
+     * @param e The MouseEvent representing the mouse press event.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
@@ -146,7 +167,8 @@ public class Menu extends MouseAdapter {
                         for (int y = 0; y <= 3; y++) {
                             if ((i * 4) + y < maps.length) {
                                 if (mouseOver(mx, my, 18 + ((238 + 25) * y), 200 + (204 * i), 238, 179)) {
-                                    this.handler.setMap(new Map(handler, maps[(i * 4) + y].getAbsolutePath() + "/"));
+                                    AudioPlayer.getMusic("menu").stop();
+                                    this.handler.setMap(new Map(handler, maps[(i * 4) + y].getAbsolutePath() + "/", maps[(i * 4) + y].getName()));
                                     this.openedMenu = MENU.MAIN;
                                     Game.gameState = Game.STATE.GAME;
                                 }

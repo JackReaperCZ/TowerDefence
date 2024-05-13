@@ -7,7 +7,9 @@ import Game.Map.Map;
 import Game.Map.MapStatus;
 import Game.Map.Wave.Spawner;
 
-
+/**
+ * The Handler class manages game objects and updates their state.
+ */
 public class Handler {
     //Linked list for all game objects
     public LinkedList<GameObject> objects = new LinkedList<>();
@@ -20,7 +22,9 @@ public class Handler {
     //Flag for the ids
     private int idFlag = 0;
 
-    //Ticks all game objects
+    /**
+     * Ticks all game objects.
+     */
     public void tick() {
         if (map != null) {
             map.tick();
@@ -32,7 +36,11 @@ public class Handler {
         }
     }
 
-    //Renders all game objects
+    /**
+     * Renders all game objects.
+     *
+     * @param g The Graphics object to render the game objects.
+     */
     public void render(Graphics g) {
         if (map != null) {
             map.render(g);
@@ -41,8 +49,11 @@ public class Handler {
             }
         }
     }
-    //Clears handler and setts all static variables to the default value
-    public void clearHandler(){
+
+    /**
+     * Clears the handler and sets all static variables to their default values.
+     */
+    public void clearHandler() {
         this.map = null;
         Map.COIN = 10000;
         Map.HEALTH = 100;
@@ -56,38 +67,67 @@ public class Handler {
         toAdd.clear();
     }
 
-    //Method to add game object to the list
+    /**
+     * Adds game objects to the list.
+     */
     public void addToList() {
         objects.addAll(toAdd);
         toAdd.clear();
     }
 
-    //Method to remove game object from the list
+    /**
+     * Removes game objects from the list.
+     */
     public void removeFromList() {
         objects.removeAll(toRemove);
         toRemove.clear();
     }
 
-    //Adds game object
+    /**
+     * Adds a game object to the handler.
+     *
+     * @param gameObject The game object to add.
+     */
     public void addGameObject(GameObject gameObject) {
         gameObject.setIdentification(this.idFlag);
         idFlag++;
         this.toAdd.add(gameObject);
     }
 
-    //Removes game object
+    /**
+     * Removes a game object from the handler.
+     *
+     * @param gameObject The game object to remove.
+     */
     public void removeGameObject(GameObject gameObject) {
         this.toRemove.add(gameObject);
     }
-    //Getters and setters
+
+    // Getters and setters
+
+    /**
+     * Sets the map for the game.
+     *
+     * @param map The map to set.
+     */
     public void setMap(Map map) {
         this.map = map;
     }
 
+    /**
+     * Retrieves the current map.
+     *
+     * @return The current map.
+     */
     public Map getMap() {
         return map;
     }
 
+    /**
+     * Retrieves the list of objects to be removed.
+     *
+     * @return The list of objects to be removed.
+     */
     public LinkedList<GameObject> getToRemove() {
         return toRemove;
     }

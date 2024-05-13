@@ -5,6 +5,9 @@ import Game.Monsters.Monster;
 
 import java.util.ArrayList;
 
+/**
+ * The Wave class represents a wave of monsters that are spawned during gameplay.
+ */
 public class Wave {
     //Handler
     private Handler handler;
@@ -24,11 +27,21 @@ public class Wave {
     private int spawnNodeFlag = 0;
     //Arraylist of spawn nodes
     private ArrayList<SpawnNode> spawnNodes = new ArrayList<>();
-    //Constrictor
+
+    /**
+     * Constructs a Wave object with the specified handler.
+     *
+     * @param handler The handler to manage game objects.
+     */
     public Wave(Handler handler) {
         this.handler = handler;
     }
-    //tick method
+
+    /**
+     * Updates the state of the wave.
+     *
+     * @throws CloneNotSupportedException If cloning of monster objects is not supported.
+     */
     public void tick() throws CloneNotSupportedException {
         if (!done) {
             if (spawnNodeDone) {
@@ -76,17 +89,30 @@ public class Wave {
             }
         }
     }
-    //Getters and setters
+
+    /**
+     * Checks if the wave is done spawning all monsters.
+     */
     public void checkIfDone() {
         if (spawnNodeFlag == spawnNodes.size()) {
             this.done = true;
         }
     }
 
+    /**
+     * Adds a spawn node to the wave.
+     *
+     * @param spawnNode The spawn node to add.
+     */
     public void addSpawnNode(SpawnNode spawnNode) {
         spawnNodes.add(spawnNode);
     }
 
+    /**
+     * Checks if the wave is done spawning all monsters.
+     *
+     * @return True if the wave is done, false otherwise.
+     */
     public boolean isDone() {
         return done;
     }

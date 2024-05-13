@@ -17,6 +17,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * An abstract class representing a Tower in the game.
+ */
 public abstract class Tower extends GameObject {
     //Name of the tower for finding files
     protected String towerName;
@@ -52,7 +55,13 @@ public abstract class Tower extends GameObject {
     //Angle for rotation of the image
     protected double angle = 0;
 
-    //Constructor
+    /**
+     * Constructs a Tower with the specified coordinates and handler.
+     *
+     * @param x       The x-coordinate of the tower.
+     * @param y       The y-coordinate of the tower.
+     * @param handler The handler managing the tower.
+     */
     public Tower(int x, int y, Handler handler) {
         super(x, y);
         this.shootingStyle = SHOOTING_STYLE.FIRST;
@@ -61,15 +70,17 @@ public abstract class Tower extends GameObject {
         this.id = ID.Tower;
     }
 
-    //Method to handle collision between the radius and objects
+    /**
+     * Handles collision detection between the tower's radius and objects.
+     */
     public void collision() {
-        //Getting all enemies in radius of the tower
+        // Getting all enemies in radius of the tower
         for (GameObject go : handler.objects) {
             if (go.getId() == ID.Monster && getIntersects().intersects(go.getBounds())) {
                 enemies.add((Monster) go);
             }
         }
-        //Selecting target based on shooting style
+        // Selecting target based on shooting style
         if (!enemies.isEmpty()) {
             switch (shootingStyle) {
                 case FIRST -> {
@@ -96,7 +107,9 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    //Loading tower assets
+    /**
+     * Loads tower assets.
+     */
     public void getTowerAssets() {
         //Getting cost of upgrades
         try {
@@ -126,7 +139,11 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    //Method to upgrade the tower
+    /**
+     * Upgrades the tower's attributes.
+     *
+     * @param i The index of the upgrade.
+     */
     public void upgrade(int i) {
         if (upgrades[i] == null) {
             upgrades[i] = 1;
@@ -147,18 +164,32 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    //Shoot method
+    /**
+     * The method for tower to shoot.
+     *
+     * @param xTarget The x-coordinate of the target.
+     * @param yTarget The y-coordinate of the target.
+     */
     public abstract void shoot(int xTarget, int yTarget);
 
-    //Method for calculating angle for image rotation
+    /**
+     * Calculates the angle for tower image rotation.
+     *
+     * @param x2 The x-coordinate of the target.
+     * @param y2 The y-coordinate of the target.
+     * @return The angle in radians.
+     */
     public double calculateAngle(int x2, int y2) {
         double deltaY = y2 - y;
         double deltaX = x2 - x;
         return Math.atan2(deltaY, deltaX);
     }
 
-    public void nextShootingStyle(){
-        switch (shootingStyle){
+    /**
+     * Switches to the next shooting style.
+     */
+    public void nextShootingStyle() {
+        switch (shootingStyle) {
             case FIRST -> shootingStyle = SHOOTING_STYLE.LAST;
             case LAST -> shootingStyle = SHOOTING_STYLE.WEAK;
             case WEAK -> shootingStyle = SHOOTING_STYLE.STRONG;
@@ -166,8 +197,11 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    public void previousShootingStyle(){
-        switch (shootingStyle){
+    /**
+     * Switches to the previous shooting style.
+     */
+    public void previousShootingStyle() {
+        switch (shootingStyle) {
             case FIRST -> shootingStyle = SHOOTING_STYLE.STRONG;
             case LAST -> shootingStyle = SHOOTING_STYLE.FIRST;
             case WEAK -> shootingStyle = SHOOTING_STYLE.LAST;
@@ -175,7 +209,9 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    //Tick method
+    /**
+     * Updates the tower's state.
+     */
     @Override
     public void tick() {
         if (projectileCooldown == 0) {
@@ -185,7 +221,11 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    //Render method
+    /**
+     * Renders the tower.
+     *
+     * @param g The Graphics object to render with.
+     */
     @Override
     public void render(Graphics g) {
         if (renderRadius) {
@@ -207,13 +247,21 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    //Hitbox for radius of the tower
+    /**
+     * Gets the hitbox for the tower's radius.
+     *
+     * @return The Ellipse2D representing the hitbox.
+     */
     @Override
     public Ellipse2D getIntersects() {
         return new Ellipse2D.Double(x - ((double) radius / 2) + 16, y - ((double) radius / 2) + 16, radius, radius);
     }
 
-    //Hitbox for selecting the tower
+    /**
+     * Gets the hitbox for selecting the tower.
+     *
+     * @return The Rectangle2D representing the hitbox.
+     */
     @Override
     public Rectangle2D getBounds() {
         return new Rectangle2D.Double(x, y, 76, 76);
@@ -255,7 +303,8 @@ public abstract class Tower extends GameObject {
     public SHOOTING_STYLE getShootingStyle() {
         return shootingStyle;
     }
-    public int getPrice(){
+
+    public int getPrice() {
         return price;
     }
 

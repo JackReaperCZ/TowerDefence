@@ -10,6 +10,10 @@ import Game.Towers.Tower;
 
 import javax.swing.*;
 
+/**
+ * The Upgradebar class represents the user interface for upgrading towers in the game.
+ * It allows players to upgrade various attributes of towers such as range, fire rate, and damage.
+ */
 public class Upgradebar extends UI {
     private final Game game;
     private final Handler handler;
@@ -18,6 +22,12 @@ public class Upgradebar extends UI {
     private int upgradeBarXREF = 0;
     private boolean upgradeBarOpened = false;
 
+    /**
+     * Constructs an Upgradebar object with the specified game and handler.
+     *
+     * @param game    The game instance.
+     * @param handler The handler for game objects.
+     */
     public Upgradebar(Game game, Handler handler) {
         this.game = game;
         this.handler = handler;
@@ -25,15 +35,27 @@ public class Upgradebar extends UI {
         this.coin = iconC.getImage();
     }
 
+    /**
+     * Opens the upgrade bar.
+     */
     public void openUpgradeBar() {
         game.getHud().getSidebar().closeSideBar();
         this.upgradeBarOpened = true;
     }
 
+    /**
+     * Closes the upgrade bar.
+     */
     public void closeUpgradeBar() {
         this.upgradeBarOpened = false;
     }
 
+    /**
+     * Retrieves the upgrade message for the specified upgrade.
+     *
+     * @param i The index of the upgrade.
+     * @return The upgrade message.
+     */
     public String getUpgradeMsg(int i) {
         switch (i) {
             case 0 -> {
@@ -67,6 +89,11 @@ public class Upgradebar extends UI {
         return null;
     }
 
+    /**
+     * Renders the upgrade bar.
+     *
+     * @param g The Graphics context to render on.
+     */
     @Override
     public void render(Graphics g) {
         if (selectedTower != null) {
@@ -138,6 +165,9 @@ public class Upgradebar extends UI {
         }
     }
 
+    /**
+     * Updates the upgrade bar.
+     */
     @Override
     public void tick() {
         int velX = 20;
@@ -152,6 +182,11 @@ public class Upgradebar extends UI {
         }
     }
 
+    /**
+     * Handles mouse press events.
+     *
+     * @param e The MouseEvent object.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
@@ -232,6 +267,11 @@ public class Upgradebar extends UI {
         }
     }
 
+    /**
+     * Checks if the upgrade bar is opened.
+     *
+     * @return True if the upgrade bar is opened, false otherwise.
+     */
     public boolean isUpgradeBarOpened() {
         return upgradeBarOpened;
     }

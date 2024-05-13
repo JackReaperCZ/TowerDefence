@@ -1,18 +1,30 @@
 package Game.HUD;
 
 import Game.Game;
+import Game.AudioPlayer;
 import Game.Handler;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-
+/**
+ * The PauseMenu class represents the pause menu in the game.
+ * It allows the player to resume the game or return to the main menu.
+ */
 public class PauseMenu extends UI {
     private Handler handler;
-
+    /**
+     * Constructs a PauseMenu object with the specified handler.
+     *
+     * @param handler The handler for game objects.
+     */
     public PauseMenu(Handler handler) {
         this.handler = handler;
     }
-
+    /**
+     * Renders the pause menu.
+     *
+     * @param g The Graphics context to render on.
+     */
     @Override
     public void render(Graphics g) {
         if (Game.gameState == Game.STATE.PAUSE) {
@@ -52,10 +64,16 @@ public class PauseMenu extends UI {
             }
         }
     }
-
+    /**
+     * Updates the pause menu.
+     */
     @Override
     public void tick() {}
-
+    /**
+     * Handles mouse press events on the pause menu.
+     *
+     * @param e The MouseEvent object.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
@@ -65,6 +83,8 @@ public class PauseMenu extends UI {
                 Game.gameState = Game.STATE.GAME;
             }
             if(mouseOver(mx,my,(Game.WIDTH / 2) - 100, (Game.HEIGHT / 2) + 20, 200, 75)){
+                AudioPlayer.getMusic(handler.getMap().getMapName()).stop();
+                AudioPlayer.getMusic("menu").loop();
                 handler.clearHandler();
                 Game.gameState = Game.STATE.MENU;
             }
