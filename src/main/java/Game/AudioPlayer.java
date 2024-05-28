@@ -34,11 +34,19 @@ public class AudioPlayer {
             // Load music for the menu
             musicMap.put("menu", new Music("audio/music/menu.ogg"));
 
+            /*
+            data\maps C:\Users\Jack\Desktop\data\maps
+java.lang.NullPointerException: Cannot read the array length because "folders" is null
+        at Game.AudioPlayer.load(AudioPlayer.java:42)
+        at Game.Game.<init>(Game.java:96)
+        at Game.Game.main(Game.java:78)
+             */
+
             // Load music for each map
             try {
                 File directory = new File("maps");
-                File[] folders = directory.listFiles(File::isDirectory);
-                assert folders != null;
+                System.out.println(directory.getPath() + " " + directory.getAbsolutePath());
+                File[] folders = directory.listFiles();
                 if (folders.length == 0) {
                     throw new Exception("No maps found.");
                 }
