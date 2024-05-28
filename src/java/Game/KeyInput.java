@@ -1,7 +1,6 @@
 package Game;
 
 import Game.HUD.Dummy;
-import Game.HUD.HUD;
 import Game.Map.Map;
 import Game.Map.MapStatus;
 import Game.Map.Wave.Spawner;
@@ -38,7 +37,6 @@ public class KeyInput extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        System.out.println(key);
         if (Map.mapStatus == MapStatus.IN_PROGRESS) {
             switch (key) {
                 //Left

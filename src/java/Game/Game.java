@@ -71,8 +71,6 @@ public class Game extends Canvas implements Runnable {
      *
      * @param args Command-line arguments (not used).
      */
-
-    //Main method
     public static void main(String[] args) {
         FlatMacDarkLaf.setup();
         new Game();
