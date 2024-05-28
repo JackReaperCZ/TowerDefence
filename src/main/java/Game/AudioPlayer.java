@@ -22,27 +22,30 @@ public class AudioPlayer {
      */
     public static void load() {
         try {
-            soundMap.put("nope", new Sound("src/main/data/audio/nope.ogg"));
-            soundMap.put("place", new Sound("src/main/data/audio/place.ogg"));
-            soundMap.put("cannon", new Sound("src/main/data/audio/cannon.ogg"));
-            soundMap.put("gameOver", new Sound("src/main/data/audio/gameOver.ogg"));
-            soundMap.put("gameWin", new Sound("src/main/data/audio/gameWin.ogg"));
-            soundMap.put("sell", new Sound("src/main/data/audio/sell.ogg"));
-            soundMap.put("shot", new Sound("src/main/data/audio/shot.ogg"));
-            soundMap.put("mage", new Sound("src/main/data/audio/mage.ogg"));
+            soundMap.put("nope", new Sound("audio/nope.ogg"));
+            soundMap.put("place", new Sound("audio/place.ogg"));
+            soundMap.put("cannon", new Sound("audio/cannon.ogg"));
+            soundMap.put("gameOver", new Sound("audio/gameOver.ogg"));
+            soundMap.put("gameWin", new Sound("audio/gameWin.ogg"));
+            soundMap.put("sell", new Sound("audio/sell.ogg"));
+            soundMap.put("shot", new Sound("audio/shot.ogg"));
+            soundMap.put("mage", new Sound("audio/mage.ogg"));
 
             // Load music for the menu
-            musicMap.put("menu", new Music("src/main/data/audio/music/menu.ogg"));
+            musicMap.put("menu", new Music("audio/music/menu.ogg"));
 
             // Load music for each map
             try {
-                File directory = new File("src/main/data/maps");
+                File directory = new File("maps");
                 File[] folders = directory.listFiles(File::isDirectory);
+                assert folders != null;
                 if (folders.length == 0) {
                     throw new Exception("No maps found.");
                 }
                 for (File map : folders) {
-                    musicMap.put(map.getName(), new Music(map.getAbsolutePath() + "/music.ogg"));
+                    if (map.isDirectory()) {
+                        musicMap.put(map.getName(), new Music(map.getAbsolutePath() + "music.ogg"));
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

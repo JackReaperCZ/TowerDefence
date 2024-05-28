@@ -2,10 +2,12 @@ package Game;
 
 import Game.Map.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 /**
@@ -34,10 +36,10 @@ public class Menu extends MouseAdapter {
     public Menu(Handler handler) {
         this.handler = handler;
         this.maps = getActiveMaps();
-        ImageIcon icon = new ImageIcon("src/main/data/menu/menu_background.png");
-        this.background = icon.getImage();
         try {
-            InputStream is = new BufferedInputStream(new FileInputStream("src/main/data/font/magic-school.one.ttf"));
+            BufferedImage icon = ImageIO.read(new File("src/data/menu/menu_background.png"));
+            this.background = icon;
+            InputStream is = new BufferedInputStream(new FileInputStream("font/magic-school.one.ttf"));
             Font magicschool = Font.createFont(Font.TRUETYPE_FONT, is);
             this.fontB = magicschool.deriveFont(Font.BOLD, 120f);
             this.fontS = magicschool.deriveFont(Font.BOLD, 60f);
@@ -125,9 +127,10 @@ public class Menu extends MouseAdapter {
      */
     private File[] getActiveMaps() {
         try {
-            File directory = new File("src/main/data/maps");
+            File directory = new File("./maps");
             File[] folders = directory.listFiles(File::isDirectory);
-            if (folders.length == 0) {
+            assert folders != null;
+            if (folders.length - 1 == 0) {
                 throw new Exception("No maps found.");
             } else if (folders.length >= 8) {
                 throw new Exception("Not enough map slots.");

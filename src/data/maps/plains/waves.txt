@@ -1,0 +1,15 @@
+//time(second),monster,count,gap(tick),type
+wave 1 :
+ 2,slime,20,35,NORMAL
+ 10,slime,5,35,NORMAL
+ 18,slime,15,35,NORMAL
+ 26,slime,20,35,NORMAL
+ 34,slime,1,35,ARMORED
+ 42,slime,35,35,NORMAL
+wave 2 :
+ 2,slime,20,35,NORMAL
+ 10,slime,5,35,NORMAL
+ 18,slime,15,35,NORMAL
+ 26,slime,20,35,NORMAL
+ 34,slime,1,35,NORMAL
+ 42,slime,35,35,NORMAL

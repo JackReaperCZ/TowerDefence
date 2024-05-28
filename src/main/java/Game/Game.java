@@ -2,6 +2,7 @@ package Game;
 
 import Game.HUD.Dummy;
 import Game.HUD.HUD;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -73,6 +74,7 @@ public class Game extends Canvas implements Runnable {
 
     //Main method
     public static void main(String[] args) {
+        FlatMacDarkLaf.setup();
         new Game();
     }
 
