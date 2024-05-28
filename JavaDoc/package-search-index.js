@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Game"},{"l":"Game.HUD"},{"l":"Game.Map"},{"l":"Game.Map.Wave"},{"l":"Game.Monsters"},{"l":"Game.Monsters.Comparators"},{"l":"Game.Towers"},{"l":"Game.Towers.Projectile"}];updateSearchResults();
