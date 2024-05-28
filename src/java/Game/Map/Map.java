@@ -24,7 +24,7 @@ public class Map {
     /**
      * Health variable
      */
-    public static int HEALTH = 1000;
+    public static int HEALTH = 100;
     /**
      * Path
      */
