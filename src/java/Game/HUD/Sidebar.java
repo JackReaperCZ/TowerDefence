@@ -21,15 +21,54 @@ import java.util.Objects;
  * It provides options for purchasing and placing towers.
  */
 public class Sidebar extends UI {
+    /**
+     * Indicates whether the sidebar is opened.
+     */
     private boolean sideBarOpened = false;
+
+    /**
+     * The X-coordinate reference for the sidebar.
+     */
     private int sideBarXREF = 0;
+
+    /**
+     * The velocity in the X direction.
+     */
     private int velX = 5;
+
+    /**
+     * The handler associated with this object.
+     */
     private Handler handler;
+
+    /**
+     * The image used to represent a coin.
+     */
     private Image coin;
+
+    /**
+     * The image used to represent a cannon.
+     */
     private Image cannon;
+
+    /**
+     * The image used to represent a ninja.
+     */
     private Image ninja;
+
+    /**
+     * The image used to represent a mage.
+     */
     private Image mage;
+
+    /**
+     * The game instance associated with this object.
+     */
     private Game game;
+
+    /**
+     * A dummy object used for testing or placeholder purposes.
+     */
     private Dummy dummy;
 
     /**

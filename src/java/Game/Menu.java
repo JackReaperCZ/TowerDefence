@@ -11,25 +11,44 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
  * Represents the menu interface of the game.
  */
 public class Menu extends MouseAdapter {
+    /**
+     * BufferedImage background
+     */
     private BufferedImage background;
+    /**
+     * Big 120f bold magic school one font
+     */
     private Font fontB;
+    /**
+     * Small 60f bold magic school one font
+     */
     private Font fontS;
+    /**
+     * Handler
+     */
     private Handler handler;
+    /**
+     *  ArrayList of active maps saved in MapData objects
+     */
     private ArrayList<MapData> maps;
 
-    // Represents the currently opened menu state
+    /**
+     * Represents the currently opened menu state
+     */
     private enum MENU {
         MAIN,
         MAP_SELECT
     }
 
+    /**
+     * Actual menu state
+     */
     private MENU openedMenu = MENU.MAIN;
 
     /**
@@ -122,7 +141,7 @@ public class Menu extends MouseAdapter {
     /**
      * Retrieves active maps from the map directory.
      *
-     * @return An array of active maps.
+     * @return An ArrayList of map data.
      */
     private ArrayList<MapData> getActiveMaps() {
         ArrayList<MapData> maps = new ArrayList<>();

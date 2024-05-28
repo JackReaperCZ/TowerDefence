@@ -10,9 +10,13 @@ import java.util.ArrayList;
  * It loads flags from a file and builds the path by connecting these flags.
  */
 public class Path {
-    // Source path of the map folder
+    /**
+     * Source path of the map folder
+     */
     private String sourcePath;
-    // ArrayList of flags
+    /**
+     * ArrayList of flags
+     */
     private ArrayList<Flag> flags = new ArrayList<>();
 
     /**

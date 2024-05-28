@@ -21,11 +21,34 @@ import java.util.Objects;
  * It provides a visual representation of the tower's range and appearance.
  */
 public class Dummy extends MouseMotionAdapter {
+    /**
+     * The handler associated with this object.
+     */
     private Handler handler;
+
+    /**
+     * The image associated with this object.
+     */
     private Image image;
+
+    /**
+     * The tower associated with this object.
+     */
     private Tower tower;
+
+    /**
+     * The radius of this object.
+     */
     private int radius;
+
+    /**
+     * The x-coordinate of this object, initialized to the center of the game width.
+     */
     private int x = Game.WIDTH / 2;
+
+    /**
+     * The y-coordinate of this object, initialized to the center of the game height.
+     */
     private int y = Game.HEIGHT / 2;
 
     /**

@@ -6,7 +6,6 @@ import Game.Map.Path;
 import Game.Monsters.*;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -15,15 +14,25 @@ import java.util.ArrayList;
  * The Spawner class manages the spawning of waves of monsters on the map.
  */
 public class Spawner {
-    //Arraylist of waves in this map
+    /**
+     * Arraylist of waves in this map
+     */
     private final ArrayList<Wave> waves = new ArrayList<>();
-    //Wave counter in ticks
+    /**
+     * Wave counter in ticks
+     */
     public static int WAVE_COUNTER = 0;
-    //Index of th wave
+    /**
+     * Index of th wave
+     */
     public static int ACTUAL_WAVE = 0;
-    //Wave timer in seconds
+    /**
+     * Wave timer in seconds
+     */
     public static int WAVE_TIMER = 0;
-    //Control variable for switching spawning of monsters
+    /**
+     * Control variable for switching spawning of monsters
+     */
     public static boolean SPAWN = false;
 
     /**

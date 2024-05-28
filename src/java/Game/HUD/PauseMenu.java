@@ -11,6 +11,9 @@ import java.awt.event.MouseEvent;
  * It allows the player to resume the game or return to the main menu.
  */
 public class PauseMenu extends UI {
+    /**
+     * Handler
+     */
     private Handler handler;
     /**
      * Constructs a PauseMenu object with the specified handler.

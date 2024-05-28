@@ -12,8 +12,14 @@ import java.util.Objects;
  * It provides methods for rendering and updating UI components.
  */
 public abstract class UI extends MouseAdapter {
-    protected Font fontS;
+    /**
+     * Big 120f bold Comic Sans MS3 font
+     */
     protected Font fontB;
+    /**
+     * Small 60f bold Comic Sans MS3 font
+     */
+    protected Font fontS;
 
     /**
      * Constructs a UI object and initializes the fonts.

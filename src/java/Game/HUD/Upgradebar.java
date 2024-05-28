@@ -18,11 +18,34 @@ import javax.swing.*;
  * It allows players to upgrade various attributes of towers such as range, fire rate, and damage.
  */
 public class Upgradebar extends UI {
+    /**
+     * The game instance associated with this object.
+     */
     private final Game game;
+
+    /**
+     * The handler associated with this object.
+     */
     private final Handler handler;
+
+    /**
+     * The image used to represent a coin.
+     */
     private final Image coin;
+
+    /**
+     * The currently selected tower.
+     */
     private Tower selectedTower;
+
+    /**
+     * The X-coordinate reference for the upgrade bar.
+     */
     private int upgradeBarXREF = 0;
+
+    /**
+     * Indicates whether the upgrade bar is opened.
+     */
     private boolean upgradeBarOpened = false;
 
     /**

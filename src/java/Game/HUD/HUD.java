@@ -22,11 +22,34 @@ import java.util.Objects;
  */
 public class HUD extends UI {
 
+    /**
+     * The image used to represent a coin.
+     */
     private Image coin;
+
+    /**
+     * The image used to represent health.
+     */
     private Image health;
+
+    /**
+     * The sidebar associated with this object.
+     */
     private Sidebar sidebar;
+
+    /**
+     * The upgrade bar associated with this object.
+     */
     private Upgradebar upgradeBar;
+
+    /**
+     * The pause menu associated with this object.
+     */
     private PauseMenu pauseMenu;
+
+    /**
+     * The handler associated with this object.
+     */
     private Handler handler;
 
     /**

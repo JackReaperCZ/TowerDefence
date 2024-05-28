@@ -17,28 +17,48 @@ import javax.swing.*;
  * The Map class represents the game map, including the background image, path, and spawner for monsters.
  */
 public class Map {
-    //Gold variable
+    /**
+     * Gold variable
+     */
     public static int COIN = 500;
-    //Health variable
-    public static int HEALTH = 100;
-    //Path
+    /**
+     * Health variable
+     */
+    public static int HEALTH = 1000;
+    /**
+     * Path
+     */
     private Path path;
-    //Spawner
+    /**
+     * Spawner
+     */
     private Spawner spawner;
-    //Handler
+    /**
+     * Handler
+     */
     private Handler handler;
-    //Map image (background)
+    /**
+     * Map image (background)
+     */
     private Image image;
-    //Actual map status
+    /**
+     * Actual map status
+     */
     public static MapStatus mapStatus = MapStatus.IN_PROGRESS;
+    /**
+     * Source path
+     */
     private String sourcePath;
+    /**
+     * Map data
+     */
     private MapData mapData;
 
 
     /**
      * Constructs a new Map object.
      *
-     * @param handler    the handler for managing game objects
+     * @param handler the handler for managing game objects
      */
     public Map(Handler handler, MapData mapData) {
         this.mapData = mapData;
@@ -152,6 +172,11 @@ public class Map {
         return sourcePath;
     }
 
+    /**
+     * Gets the map data.
+     *
+     * @return the map data
+     */
     public MapData getMapData() {
         return mapData;
     }

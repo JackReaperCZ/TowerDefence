@@ -10,9 +10,21 @@ import java.util.Objects;
  */
 public abstract class GameObject {
     //Base variables
+    /**
+     * x and y location of GameObject
+     */
     protected int x, y;
+    /**
+     * Object id (type)
+     */
     protected ID id;
+    /**
+     * Object velocities
+     */
     protected int velX, velY;
+    /**
+     * Object identification number
+     */
     protected Integer identification;
 
     /**
@@ -78,34 +90,74 @@ public abstract class GameObject {
 
     //Getters and setters
 
+    /**
+     * Sets the x-coordinate of this object.
+     *
+     * @param x the new x-coordinate value
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * Sets the y-coordinate of this object.
+     *
+     * @param y the new y-coordinate value
+     */
     public void setY(int y) {
         this.y = y;
     }
 
+    /**
+     * Gets the x-coordinate of this object.
+     *
+     * @return the current x-coordinate value
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Gets the y-coordinate of this object.
+     *
+     * @return the current y-coordinate value
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Gets the ID of this object.
+     *
+     * @return the current ID
+     */
     public ID getId() {
         return id;
     }
 
+    /**
+     * Sets the x-velocity of this object.
+     *
+     * @param velX the new x-velocity value
+     */
     public void setVelX(int velX) {
         this.velX = velX;
     }
 
+    /**
+     * Sets the y-velocity of this object.
+     *
+     * @param velY the new y-velocity value
+     */
     public void setVelY(int velY) {
         this.velY = velY;
     }
 
+    /**
+     * Sets the identification number of this object.
+     *
+     * @param identification the new identification number
+     */
     public void setIdentification(Integer identification) {
         this.identification = identification;
     }

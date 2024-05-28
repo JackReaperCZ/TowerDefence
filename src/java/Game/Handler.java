@@ -11,15 +11,25 @@ import Game.Map.Wave.Spawner;
  * The Handler class manages game objects and updates their state.
  */
 public class Handler {
-    //Linked list for all game objects
+    /**
+     * Linked list for all game objects
+     */
     public LinkedList<GameObject> objects = new LinkedList<>();
-    //Linked list of game object that will be added the next tick
+    /**
+     * Linked list of game object that will be added the next tick
+     */
     public LinkedList<GameObject> toAdd = new LinkedList<>();
-    //Linked list of game object that will be removed the next tick
+    /**
+     * Linked list of game object that will be removed the next tick
+     */
     public LinkedList<GameObject> toRemove = new LinkedList<>();
-    //Actual map to render
+    /**
+     * Actual map to render
+     */
     public Map map;
-    //Flag for the ids
+    /**
+     * Flag for the ids
+     */
     private int idFlag = 0;
 
     /**

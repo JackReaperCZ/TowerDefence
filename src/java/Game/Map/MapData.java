@@ -14,9 +14,21 @@ import static Game.AudioPlayer.musicMap;
  * Represents data associated with a map in the game.
  */
 public class MapData {
+    /**
+     * Map name
+     */
     private String name;
+    /**
+     * Map image
+     */
     private BufferedImage image;
+    /**
+     * Map music
+     */
     private Music music;
+    /**
+     * URL path to source files
+     */
     private String url;
 
     /**

@@ -4,7 +4,13 @@ package Game.Map;
  * The Flag class represents a flag on the game map, used to define the path that monsters follow.
  */
 public class Flag {
+    /**
+     * x and y location of the flag
+     */
     private int x, y;
+    /**
+     * Pointer to the next flag
+     */
     private Flag nextFlag;
 
     /**

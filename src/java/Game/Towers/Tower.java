@@ -22,20 +22,42 @@ import java.util.Objects;
  * An abstract class representing a Tower in the game.
  */
 public abstract class Tower extends GameObject {
-    //Name of the tower for finding files
+    /**
+     * Name of the tower for finding files
+     */
     protected String towerName;
+    /**
+     * Handler
+     */
     protected Handler handler;
+    /**
+     * Price of the tower
+     */
     protected int price;
+    /**
+     * Damage to the monsters
+     */
     protected int dmg;
-    //Radius at the tower will see the enemy
+    /**
+     * Radius at the tower will see the enemy
+     */
     protected Integer radius;
-    //Cooldown for projectile in ticks
+    /**
+     * Cooldown for projectile in ticks
+     */
     protected int projectileCooldown;
+    /**
+     * Cooldown flag
+     */
     protected int coolDownFlag;
-    //Control variable to render the radius
+    /**
+     * Control variable to render the radius
+     */
     protected boolean renderRadius;
 
-    //Shooting style of the tower
+    /**
+     * Shooting style of the tower
+     */
     public enum SHOOTING_STYLE {
         FIRST,
         LAST,
@@ -43,17 +65,33 @@ public abstract class Tower extends GameObject {
         STRONG
     }
 
+    /**
+     * Actual shooting style
+     */
     protected SHOOTING_STYLE shootingStyle;
-    //Array for remembering upgrades levels
+    /**
+     * Array for remembering upgrades levels
+     */
     protected Integer[] upgrades = new Integer[3];
-    //Array for remembering upgrades costs
+    /**
+     * Array for remembering upgrades costs
+     */
     protected Integer[][] upgrade_cost = new Integer[3][3];
+    /**
+     * Array for remembering upgrade images
+     */
     protected Image[][] upgrade_images = new Image[3][3];
-    //Arraylist of enemies in radius
+    /**
+     * Arraylist of enemies in radius
+     */
     protected ArrayList<Monster> enemies = new ArrayList<>();
-    //Sprite of the tower
+    /**
+     * Sprite of the tower
+     */
     protected Image image;
-    //Angle for rotation of the image
+    /**
+     * Angle for rotation of the image
+     */
     protected double angle = 0;
 
     /**
@@ -281,46 +319,102 @@ public abstract class Tower extends GameObject {
     }
 
     //Setters and getters
+
+    /**
+     * Gets the radius of this object.
+     *
+     * @return the current radius value
+     */
     public Integer getRadius() {
         return radius;
     }
 
+    /**
+     * Gets the handler associated with this object.
+     *
+     * @return the current handler
+     */
     public Handler getHandler() {
         return handler;
     }
 
+    /**
+     * Sets the handler for this object.
+     *
+     * @param handler the new handler
+     */
     public void setHandler(Handler handler) {
         this.handler = handler;
     }
 
+    /**
+     * Gets the array of upgrades for this object.
+     *
+     * @return the current array of upgrades
+     */
     public Integer[] getUpgrades() {
         return upgrades;
     }
 
+    /**
+     * Gets the 2D array of upgrade images for this object.
+     *
+     * @return the current 2D array of upgrade images
+     */
     public Image[][] getUpgrade_images() {
         return upgrade_images;
     }
 
+    /**
+     * Gets the image associated with this object.
+     *
+     * @return the current image
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Gets the 2D array of upgrade costs for this object.
+     *
+     * @return the current 2D array of upgrade costs
+     */
     public Integer[][] getUpgrade_cost() {
         return upgrade_cost;
     }
 
+    /**
+     * Sets whether the radius should be rendered.
+     *
+     * @param renderRadius the new render radius state
+     */
     public void setRenderRadius(boolean renderRadius) {
         this.renderRadius = renderRadius;
     }
 
+    /**
+     * Gets the shooting style of this object.
+     *
+     * @return the current shooting style
+     */
     public SHOOTING_STYLE getShootingStyle() {
         return shootingStyle;
     }
 
+    /**
+     * Gets the price of this object.
+     *
+     * @return the current price
+     */
     public int getPrice() {
         return price;
     }
 
+    /**
+     * Gets the name of the tower.
+     *
+     * @return the current tower name
+     */
     public String getTowerName() {
         return towerName;
     }

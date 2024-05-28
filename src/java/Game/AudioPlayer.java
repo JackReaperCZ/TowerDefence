@@ -4,7 +4,6 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +11,13 @@ import java.util.Map;
  * The AudioPlayer class manages loading and accessing audio files.
  */
 public class AudioPlayer {
-    // Map to store sound effects
+    /**
+     * Map to store sound effects
+     */
     public static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-    // Map to store music
+    /**
+     * Map to store music
+     */
     public static Map<String, Music> musicMap = new HashMap<String, Music>();
 
     /**

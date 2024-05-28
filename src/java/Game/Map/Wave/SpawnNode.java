@@ -6,9 +6,21 @@ import Game.Monsters.Monster;
  * The SpawnNode class represents a node in a wave indicating when and what monster to spawn.
  */
 public class SpawnNode {
+    /**
+     * Time flag of the spawn node
+     */
     private int time;
+    /**
+     * Monster to spawn
+     */
     private Monster monster;
+    /**
+     * Count of monsters to spawn
+     */
     private int count;
+    /**
+     * Gap between spawning
+     */
     private int gap;
 
     /**

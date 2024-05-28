@@ -19,31 +19,57 @@ import java.util.Objects;
  * Represents a monster in the game.
  */
 public abstract class Monster extends GameObject implements Cloneable {
-    //Type of the monster
+    /**
+     * Type of the monster
+     */
     protected Type type;
-    //Damage done by monster when it gets thought
+    /**
+     * Damage done by monster when it gets thought
+     */
     protected int dmg;
-    //Health of the monster
+    /**
+     * Health of the monster
+     */
     protected int hp;
-    //The gold player gets when the monster is killed
+    /**
+     * The gold player gets when the monster is killed
+     */
     protected int gold;
-    //The speed of the monster
+    /**
+     * The speed of the monster
+     */
     protected int speed;
-    //Name of the monster
+    /**
+     * Name of the monster
+     */
     protected String name;
-    //Progression on path in px
+    /**
+     * Progression on path in px
+     */
     protected int progression = 0;
-    //Go to x
+    /**
+     * Go to x
+     */
     protected int xToGo;
-    //Go to y
+    /**
+     * Go to y
+     */
     protected int yToGo;
-    //Flag id on the path
+    /**
+     * Flag id on the path
+     */
     protected int flag = 0;
-    //Handler
+    /**
+     * Handler
+     */
     protected Handler handler;
-    //Sprite of the monster
+    /**
+     * Sprite of the monster
+     */
     protected Image image;
-    //Control variable to see if the image should render flipped
+    /**
+     * Control variable to see if the image should render flipped
+     */
     protected boolean flipped = false;
 
     /**
@@ -68,9 +94,21 @@ public abstract class Monster extends GameObject implements Cloneable {
     public void tick() {
         collision();
         progression += speed;
-        if (x == xToGo && y == yToGo) {
-            flag++;
-            handler.map.nextFlag(flag, this);
+        if (velX < 0 || velY < 0) {
+            if (x <= xToGo && y <= yToGo) {
+                x = xToGo;
+                y = yToGo;
+                flag++;
+                handler.map.nextFlag(flag, this);
+            }
+        }
+        if (velX > 0 || velY > 0) {
+            if (x >= xToGo && y >= yToGo) {
+                x = xToGo;
+                y = yToGo;
+                flag++;
+                handler.map.nextFlag(flag, this);
+            }
         }
         x += velX;
         y += velY;
@@ -164,6 +202,7 @@ public abstract class Monster extends GameObject implements Cloneable {
         this.yToGo = y;
         int xi = this.x - x;
         int yi = this.y - y;
+
         if (yi == 0) {
             setVelY(0);
         } else if (yi > 0) {
@@ -197,21 +236,40 @@ public abstract class Monster extends GameObject implements Cloneable {
     }
 
     //Getters and setters
+
+    /**
+     * Gets the damage value of this object.
+     *
+     * @return the current damage value
+     */
     public int getDmg() {
         return dmg;
     }
 
+    /**
+     * Sets the damage value of this object.
+     *
+     * @param dmg the new damage value
+     */
     public void setDmg(int dmg) {
         this.dmg = dmg;
     }
 
+    /**
+     * Gets the health points (HP) of this object.
+     *
+     * @return the current HP value
+     */
     public int getHp() {
         return hp;
     }
 
-
+    /**
+     * Gets the progression level of this object.
+     *
+     * @return the current progression level
+     */
     public int getProgression() {
         return progression;
     }
-
 }
