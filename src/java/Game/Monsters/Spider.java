@@ -18,7 +18,7 @@ public class Spider extends Monster {
         super(x, y, type, handler);
         this.speed = 10;
         this.dmg = 10;
-        this.gold = 100;
+        this.gold = 20;
         this.hp = 50;
         this.name = "spider";
         getAssets();

@@ -19,7 +19,7 @@ public class Worm extends Monster {
         super(x, y, type, handler);
         this.speed = 4;
         this.dmg = 15;
-        this.gold = 50;
+        this.gold = 25;
         this.hp = 250;
         this.name = "worm";
         getAssets();
