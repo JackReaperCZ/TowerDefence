@@ -6,7 +6,7 @@ A tower defense game developed in Java. The game involves placing towers to defe
 
 ## Table of Contents
 - [Documentation]()
-- [JavaDoc]()
+- [JavaDoc](https://github.com/JackReaperCZ/TowerDefence/tree/documentation)
 
 ## Features
 
